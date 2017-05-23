@@ -6,7 +6,7 @@ import lzj.entity.GasSensor;
 
 public interface GasSensorDao {
 	public int addGasSensor(GasSensor gasSensor);
-	
+
 	public int addGasSensorByDeviceId(int deviceId);
 
 	public int delGasSensorByGid(int gid);
@@ -14,6 +14,8 @@ public interface GasSensorDao {
 	public int updateGasSensor(GasSensor gasSensor);
 
 	public int updateGasSensorIsCheckByGid(int gid);
-	
+
 	public List<GasSensor> findGasSensorByDeviceId(int deviceId);
+
+	public List<GasSensor> findGasWarningByDeviceId(int deviceId);
 }

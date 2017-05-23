@@ -17,4 +17,5 @@ public interface BodySensorInfoDao {
 
 	public List<BodySensorInfo> findAllBodySensorInfoByDeviceId(int deviceId);
 
+	public List<BodySensorInfo> findWarningBodySensorByDeviceId(int deviceId);
 }

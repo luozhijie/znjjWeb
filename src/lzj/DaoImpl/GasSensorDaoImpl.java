@@ -59,4 +59,21 @@ public class GasSensorDaoImpl extends BaseDao implements GasSensorDao {
 		return gasSensorList.isEmpty() ? null : gasSensorList;
 	}
 
+	@Override
+	public List<GasSensor> findGasWarningByDeviceId(int deviceId) {
+		String sql = "SELECT * FROM znjj.gas_sensor_list where deviceId=? and ischeck=0;";
+		ResultSet rs = this.execeuteQuary(sql, new Object[] { deviceId });
+		List<GasSensor> gasSensorList = new ArrayList<>();
+		try {
+			while (rs.next()) {
+				GasSensor gasSensor = new GasSensor(rs.getInt("gid"), rs.getInt("deviceId"), rs.getString("time"),
+						rs.getInt("ischeck"));
+				gasSensorList.add(gasSensor);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return gasSensorList.isEmpty() ? null : gasSensorList;
+	}
+
 }

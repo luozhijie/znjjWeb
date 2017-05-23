@@ -29,6 +29,8 @@ import lzj.entity.GasSensor;
 import lzj.entity.Temp;
 import lzj.entity.User;
 import lzj.entity.UserType;
+import lzj.entity.Warning;
+import lzj.tools.WarningInfoSearch;
 
 /**
  * Servlet implementation class ActionServlet
@@ -68,12 +70,18 @@ public class ActionServlet extends HttpServlet {
 			String username = request.getParameter("username");
 			String password = request.getParameter("password");
 			User user = userDao.findUserByUserNameAndPassWord(username, password);
-			request.getSession().setAttribute("userObj", user);
+
 			if (user != null) {
-				url = "Index.jsp";
+				// url = "Index.jsp";
+				request.getSession().setAttribute("userObj", user);
+				List<Warning> warningList = WarningInfoSearch.search(user);
+				request.getSession().setAttribute("warningList", warningList);
+				response.getWriter().print("OK");
 			} else {
-				url = "login.jsp";
+				// url = "login.jsp";
+				response.getWriter().println("用户名或密码不正确");
 			}
+			return;
 		}
 
 		if (stat.equals("flash")) {

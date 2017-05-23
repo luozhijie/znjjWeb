@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE HTML>
 <html>
 <head>
@@ -26,7 +27,7 @@
 					<ul class="dropdown-menu">
 						<li>
 							<div class="notification_header">
-								<h3>你有N条警告信息</h3>
+								<h3>你有${fn:length(warningList) }条警告信息</h3>
 							</div>
 						</li>
 						<li><a href="#">
@@ -59,7 +60,7 @@
 							</span>
 							<div class="user-name">
 								<p>昵称</p>
-								<span>账号</span>
+								<span>${userObj.userName }</span>
 							</div>
 							<i class="fa fa-angle-down lnr"></i> <i
 								class="fa fa-angle-up lnr"></i>
@@ -76,7 +77,6 @@
 		<div class="clearfix"></div>
 	</div>
 	<div class="clearfix"></div>
-	</div>
 	<!-- main content start-->
 	<div id="page-wrapper">
 		<div class="main-page">
@@ -97,7 +97,7 @@
 						<h4>传感器</h4>
 					</div>
 					<div class="stats-right">
-						<label> 80</label>
+						<label>${fn:length(userObj.deviceList) }</label>
 					</div>
 					<div class="clearfix"></div>
 				</div>
@@ -107,7 +107,7 @@
 						<h4>警告</h4>
 					</div>
 					<div class="stats-right">
-						<label>51</label>
+						<label>${fn:length(warningList) }</label>
 					</div>
 					<div class="clearfix"></div>
 				</div>
@@ -181,7 +181,6 @@
 			<div class="cal1"></div>
 		</div>
 		<div class="clearfix"></div>
-	</div>
 	</div>
 	<!--footer-->
 	<%@ include file="footinclude.html"%>
