@@ -30,6 +30,7 @@ import lzj.entity.Temp;
 import lzj.entity.User;
 import lzj.entity.UserType;
 import lzj.entity.Warning;
+import lzj.tools.TempTools;
 import lzj.tools.WarningInfoSearch;
 
 /**
@@ -76,6 +77,9 @@ public class ActionServlet extends HttpServlet {
 				request.getSession().setAttribute("userObj", user);
 				List<Warning> warningList = WarningInfoSearch.search(user);
 				request.getSession().setAttribute("warningList", warningList);
+				List<Temp> tempList = TempTools.getTemp(user);
+				request.getSession().setAttribute("tempList", tempList);
+				System.out.println(user.getIconName());
 				response.getWriter().print("OK");
 			} else {
 				// url = "login.jsp";

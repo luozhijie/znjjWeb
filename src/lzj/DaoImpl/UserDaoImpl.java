@@ -56,7 +56,8 @@ public class UserDaoImpl extends BaseDao implements UserDao {
 			}
 			user = new User(rs.getInt("user_id"), rs.getString("user_name"), rs.getString("user_password"),
 					new UserType(rs.getInt("user_type"), rs.getString("user_type_name")),
-					deviceDao.findDeviceByUserId(rs.getInt("user_id")), teleControlList);
+					deviceDao.findDeviceByUserId(rs.getInt("user_id")), teleControlList,
+					rs.getString("user_icon") == null ? "default.jpg" : rs.getString("user_icon"));
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -85,7 +86,8 @@ public class UserDaoImpl extends BaseDao implements UserDao {
 				}
 				User user = new User(rs.getInt("user_id"), rs.getString("user_name"), rs.getString("user_password"),
 						new UserType(rs.getInt("user_type"), rs.getString("user_type_name")),
-						deviceDao.findDeviceByUserId(rs.getInt("user_id")), teleControlList);
+						deviceDao.findDeviceByUserId(rs.getInt("user_id")), teleControlList,
+						rs.getString("user_icon") == null ? "default.jpg" : rs.getString("user_icon"));
 				userList.add(user);
 			}
 
@@ -122,7 +124,8 @@ public class UserDaoImpl extends BaseDao implements UserDao {
 			}
 			user = new User(rs.getInt("user_id"), rs.getString("user_name"), rs.getString("user_password"),
 					new UserType(rs.getInt("user_type"), rs.getString("user_type_name")),
-					deviceDao.findDeviceByUserId(rs.getInt("user_id")), teleControlList);
+					deviceDao.findDeviceByUserId(rs.getInt("user_id")), teleControlList,
+					rs.getString("user_icon") == null ? "default.jpg" : rs.getString("user_icon"));
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -152,7 +155,8 @@ public class UserDaoImpl extends BaseDao implements UserDao {
 			}
 			user = new User(rs.getInt("user_id"), rs.getString("user_name"), rs.getString("user_password"),
 					new UserType(rs.getInt("user_type"), rs.getString("user_type_name")),
-					deviceDao.findDeviceByUserId(rs.getInt("user_id")), teleControlList);
+					deviceDao.findDeviceByUserId(rs.getInt("user_id")), teleControlList,
+					rs.getString("user_icon") == null ? "default.jpg" : rs.getString("user_icon"));
 
 		} catch (SQLException e) {
 			e.printStackTrace();

@@ -9,13 +9,14 @@ public class User {
 	private UserType userType;
 	private ArrayList<Device> deviceList;
 	private ArrayList<TeleControl> teleControlList;
+	private String iconName;
 
 	public User() {
 		super();
 	}
 
 	public User(int userId, String userName, String userPassWord, UserType userType, ArrayList<Device> deviceList,
-			ArrayList<TeleControl> teleControlList) {
+			ArrayList<TeleControl> teleControlList, String iconName) {
 		super();
 		this.userId = userId;
 		this.userName = userName;
@@ -23,6 +24,7 @@ public class User {
 		this.userType = userType;
 		this.deviceList = deviceList;
 		this.teleControlList = teleControlList;
+		this.iconName = iconName;
 	}
 
 	public int getUserId() {
@@ -73,10 +75,19 @@ public class User {
 		this.teleControlList = teleControlList;
 	}
 
+	public String getIconName() {
+		return iconName;
+	}
+
+	public void setIconName(String iconName) {
+		this.iconName = iconName;
+	}
+
 	@Override
 	public String toString() {
 		return "User [userId=" + userId + ", userName=" + userName + ", userPassWord=" + userPassWord + ", userType="
-				+ userType + ", deviceList=" + deviceList + ", teleControlList=" + teleControlList + "]";
+				+ userType + ", deviceList=" + deviceList + ", teleControlList=" + teleControlList + ", iconName="
+				+ iconName + "]";
 	}
 
 }

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE HTML>
 <html>
 <head>
@@ -15,67 +16,7 @@
 		<!--//end-search-box-->
 		<div class="clearfix"></div>
 	</div>
-	<div class="header-right">
-		<div class="profile_details_left">
-			<!--notifications of menu start -->
-			<ul class="nofitications-dropdown">
-
-				<li class="dropdown head-dpdn"><a href="#"
-					class="dropdown-toggle" data-toggle="dropdown"
-					aria-expanded="false"><i class="fa fa-bell"></i><span
-						class="badge blue">N</span></a>
-					<ul class="dropdown-menu">
-						<li>
-							<div class="notification_header">
-								<h3>你有${fn:length(warningList) }条警告信息</h3>
-							</div>
-						</li>
-						<li><a href="#">
-								<div class="notification_desc">
-									<p>煤气泄漏</p>
-									<p>
-										<span>一小时以前</span>
-									</p>
-								</div>
-								<div class="clearfix"></div>
-						</a></li>
-
-						<div class="clearfix"></div>
-						<li>
-							<div class="notification_bottom">
-								<a href="#">查看所有信息</a>
-							</div>
-						</li>
-					</ul>
-					<div class="clearfix"></div>
-		</div>
-		<!--notification menu end -->
-		<div class="profile_details">
-			<ul>
-				<li class="dropdown profile_details_drop"><a href="#"
-					class="dropdown-toggle" data-toggle="dropdown"
-					aria-expanded="false">
-						<div class="profile_img">
-							<span class="prfil-img"><img src="images/a.png" alt="">
-							</span>
-							<div class="user-name">
-								<p>昵称</p>
-								<span>${userObj.userName }</span>
-							</div>
-							<i class="fa fa-angle-down lnr"></i> <i
-								class="fa fa-angle-up lnr"></i>
-							<div class="clearfix"></div>
-						</div>
-				</a>
-					<ul class="dropdown-menu drp-mnu">
-						<li><a href="#"><i class="fa fa-cog"></i> 设置</a></li>
-						<li><a href="#"><i class="fa fa-user"></i> 个人中心</a></li>
-						<li><a href="#"><i class="fa fa-sign-out"></i> 注销</a></li>
-					</ul></li>
-			</ul>
-		</div>
-		<div class="clearfix"></div>
-	</div>
+	<%@ include file="righthead.html" %>
 	<div class="clearfix"></div>
 	<!-- main content start-->
 	<div id="page-wrapper">
@@ -84,10 +25,10 @@
 				<div class="col-md-4 widget">
 					<div class="stats-left ">
 						<h5>今天</h5>
-						<h4>监控</h4>
+						<h4>操作</h4>
 					</div>
 					<div class="stats-right">
-						<label> 45</label>
+						<label>45</label>
 					</div>
 					<div class="clearfix"></div>
 				</div>
