@@ -43,19 +43,13 @@
 									<td>${device.device_gpio }</td>
 									<td>${device.device_onLine }</td>
 									<td>
-										<button type="button" class="btn btn-primary">开</button>
-										<button type="button" class="btn btn-danger">关</button>
+										<div class="switch">
+											<input id="onoff" type="checkbox"
+												${device.deviceStat == 0 ? '' : 'checked' } />
+										</div>
 									</td>
 								</tr>
 							</c:forEach>
-							<tr>
-								<th scope="row">1</th>
-								<td>Mark</td>
-								<td>Otto</td>
-								<td>@mdo</td>
-								<td>@mdo</td>
-							</tr>
-
 						</tbody>
 					</table>
 				</div>
@@ -86,6 +80,7 @@
 				classie.toggle(showLeftPush, 'disabled');
 			}
 		}
+		$("#onoff").bootstrapSwitch();
 	</script>
 	<!--scrolling js-->
 	<script src="js/jquery.nicescroll.js"></script>

@@ -79,7 +79,6 @@ public class ActionServlet extends HttpServlet {
 				request.getSession().setAttribute("warningList", warningList);
 				List<Temp> tempList = TempTools.getTemp(user);
 				request.getSession().setAttribute("tempList", tempList);
-				System.out.println(user.getIconName());
 				response.getWriter().print("OK");
 			} else {
 				// url = "login.jsp";

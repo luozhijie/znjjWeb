@@ -16,8 +16,9 @@
 		<!--//end-search-box-->
 		<div class="clearfix"></div>
 	</div>
-	<%@ include file="righthead.html" %>
+	<%@ include file="righthead.html"%>
 	<div class="clearfix"></div>
+	</div>
 	<!-- main content start-->
 	<div id="page-wrapper">
 		<div class="main-page">
@@ -73,7 +74,6 @@
 									pointStrokeColor : "#fff",
 									data : [ 70, 60, 72, 61, 75, 59, 80, 70,
 											60, 72, 61, 75, 59, 80 ]
-
 								},
 								{
 									fillColor : "rgba(97, 100, 193, 1)",
@@ -87,7 +87,39 @@
 					new Chart(document.getElementById("line").getContext("2d"))
 							.Line(lineChartData);
 				</script>
-
+			</div>
+			<div class="charts">
+				<div class="charts-grids states-mdl">
+					<h4 class="title">温湿度记录</h4>
+					<canvas id="line1" height="300" width="800"> </canvas>
+				</div>
+				<div class="clearfix"></div>
+				<script>
+					var lineChartData = {
+						labels : [ "Jan", "Feb", "March", "April", "May",
+								"June", "July", "Jan", "Feb", "March", "April",
+								"May", "June", "July" ],
+						datasets : [
+								{
+									fillColor : "rgba(242, 179, 63, 1)",
+									strokeColor : "#F2B33F",
+									pointColor : "rgba(242, 179, 63, 1)",
+									pointStrokeColor : "#fff",
+									data : [ 70, 60, 72, 61, 75, 59, 80, 70,
+											60, 72, 61, 75, 59, 80 ]
+								},
+								{
+									fillColor : "rgba(97, 100, 193, 1)",
+									strokeColor : "#6164C1",
+									pointColor : "rgba(97, 100, 193,1)",
+									pointStrokeColor : "#9358ac",
+									data : [ 50, 65, 51, 67, 52, 64, 100, 50,
+											65, 51, 67, 52, 64, 50 ]
+								} ]
+					};
+					new Chart(document.getElementById("line1").getContext("2d"))
+							.Line(lineChartData);
+				</script>
 			</div>
 			<div class="row">
 				<table class="table stats-table">
@@ -123,6 +155,7 @@
 		</div>
 		<div class="clearfix"></div>
 	</div>
+	</div>
 	<!--footer-->
 	<%@ include file="footinclude.html"%>
 	<!--//footer-->
@@ -131,14 +164,12 @@
 	<script>
 		var menuLeft = document.getElementById('cbp-spmenu-s1'), showLeftPush = document
 				.getElementById('showLeftPush'), body = document.body;
-
 		showLeftPush.onclick = function() {
 			classie.toggle(this, 'active');
 			classie.toggle(body, 'cbp-spmenu-push-toright');
 			classie.toggle(menuLeft, 'cbp-spmenu-open');
 			disableOther('showLeftPush');
 		};
-
 		function disableOther(button) {
 			if (button !== 'showLeftPush') {
 				classie.toggle(showLeftPush, 'disabled');
