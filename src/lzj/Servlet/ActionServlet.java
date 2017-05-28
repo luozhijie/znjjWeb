@@ -60,9 +60,6 @@ public class ActionServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		request.setCharacterEncoding("utf-8");
-		request.setCharacterEncoding("utf-8");
-		response.setContentType("text/html;charset=UTF-8");
 		String url = "";
 		String stat = request.getParameter("stat");
 		System.out.println(stat);
@@ -71,22 +68,21 @@ public class ActionServlet extends HttpServlet {
 			String username = request.getParameter("username");
 			String password = request.getParameter("password");
 			User user = userDao.findUserByUserNameAndPassWord(username, password);
-
+			response.getWriter().flush();
 			if (user != null) {
 				// url = "Index.jsp";
 				request.getSession().setAttribute("userObj", user);
 				List<Warning> warningList = WarningInfoSearch.search(user);
 				request.getSession().setAttribute("warningList", warningList);
-				List<Temp> tempList = TempTools.getTemp(user);
-				request.getSession().setAttribute("tempList", tempList);
-				response.getWriter().print("OK");
+				response.getWriter().write("OK");
 			} else {
 				// url = "login.jsp";
-				response.getWriter().println("用户名或密码不正确");
+				response.getWriter().write("用户名或密码不正确");
 			}
+			response.getWriter().close();
 			return;
 		}
-
+		System.out.println("run down");
 		if (stat.equals("flash")) {
 			// 刷新用户信息
 			this.flash(request, response);
@@ -98,18 +94,20 @@ public class ActionServlet extends HttpServlet {
 			int deviceId = Integer.valueOf(request.getParameter("deviceId"));
 			System.out.println(isoff + "," + deviceId);
 			DeviceDao deviceDao = new DeviceDaoImpl();
+			int isok = 0;
 			switch (isoff) {
 			case 1:
-				deviceDao.statChange(isoff + "", deviceId);
+				isok = deviceDao.statChange(isoff + "", deviceId);
 				break;
 
 			default:
-				deviceDao.statChange("0", deviceId);
+				isok = deviceDao.statChange("0", deviceId);
 				break;
 			}
 			// 刷新用户信息
 			this.flash(request, response);
-			url = "Index.jsp";
+			response.getWriter().println(isok);
+			return;
 		}
 		if (stat.equals("looktemp")) {
 			int deviceId = Integer.valueOf(request.getParameter("deviceId"));

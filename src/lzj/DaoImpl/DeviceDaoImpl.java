@@ -3,6 +3,7 @@ package lzj.DaoImpl;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import lzj.DAO.BaseDao;
 import lzj.DAO.DeviceDao;
@@ -53,7 +54,6 @@ public class DeviceDaoImpl extends BaseDao implements DeviceDao {
 		return deviceList;
 	}
 
-
 	@Override
 	public int statChange(String stat, int deviceId) {
 		String sql = "UPDATE `znjj`.`device_list` SET `device_stat`=? WHERE `device_id`=?;";
@@ -66,6 +66,27 @@ public class DeviceDaoImpl extends BaseDao implements DeviceDao {
 			this.exceuteUpdate("UPDATE `znjj`.`device_list` SET ` device_online`=now() WHERE `device_id`=?;",
 					new Object[] { device.getDeviceId() });
 		}
+	}
+
+	@Override
+	public List<Integer> gpioLess(int uid) {
+		List<Integer> gpioList = new ArrayList<>();
+		for (int i = 2; i <= 21; i++) {
+			gpioList.add(i);
+		}
+		String sql = "SELECT * FROM znjj.device_list where user_id = ?;";
+		ResultSet rs = this.execeuteQuary(sql, new Object[] { uid });
+		try {
+			while (rs.next()) {
+				gpioList.remove(Integer.valueOf(rs.getString("device_gpio")));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return gpioList;
+	}
+
+	public static void main(String[] args) {
 	}
 
 }

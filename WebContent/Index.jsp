@@ -55,7 +55,7 @@
 				</div>
 				<div class="clearfix"></div>
 			</div>
-			<div class="charts">
+			<div id="charts" class="charts">
 				<div class="charts-grids states-mdl">
 					<h4 class="title">温湿度记录</h4>
 					<canvas id="line" height="300" width="800"> </canvas>
@@ -65,7 +65,7 @@
 					var lineChartData = {
 						labels : [ "Jan", "Feb", "March", "April", "May",
 								"June", "July", "Jan", "Feb", "March", "April",
-								"May", "June", "July" ],
+								"May", "June", "July", "aaa" ],
 						datasets : [
 								{
 									fillColor : "rgba(242, 179, 63, 1)",
@@ -73,7 +73,7 @@
 									pointColor : "rgba(242, 179, 63, 1)",
 									pointStrokeColor : "#fff",
 									data : [ 70, 60, 72, 61, 75, 59, 80, 70,
-											60, 72, 61, 75, 59, 80 ]
+											60, 72, 61, 75, 59, 80, 1.22 ]
 								},
 								{
 									fillColor : "rgba(97, 100, 193, 1)",
@@ -81,14 +81,13 @@
 									pointColor : "rgba(97, 100, 193,1)",
 									pointStrokeColor : "#9358ac",
 									data : [ 50, 65, 51, 67, 52, 64, 100, 50,
-											65, 51, 67, 52, 64, 50 ]
+											65, 51, 67, 52, 64, 50, 1.1 ]
 								} ]
 					};
 					new Chart(document.getElementById("line").getContext("2d"))
 							.Line(lineChartData);
 				</script>
-			</div>
-			<div class="charts">
+
 				<div class="charts-grids states-mdl">
 					<h4 class="title">温湿度记录</h4>
 					<canvas id="line1" height="300" width="800"> </canvas>
@@ -120,6 +119,7 @@
 					new Chart(document.getElementById("line1").getContext("2d"))
 							.Line(lineChartData);
 				</script>
+
 			</div>
 			<div class="row">
 				<table class="table stats-table">
@@ -131,11 +131,14 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
-							<th scope="row">1</th>
-							<td>开关</td>
-							<td><span class="label label-success">在线</span></td>
-						</tr>
+						<c:forEach items="${userObj.deviceList }" var="device">
+							<tr>
+								<th scope="row">${device.deviceId }</th>
+								<td>${device.deviceName }</td>
+								<td><span class="label label-success">在线</span></td>
+							</tr>
+						</c:forEach>
+
 						<tr>
 							<th scope="row">2</th>
 							<td>检测</td>
@@ -175,6 +178,11 @@
 				classie.toggle(showLeftPush, 'disabled');
 			}
 		}
+		$(document).ready(function() {
+			$.get("GetInfoServlet?stat=temp", function(data) {
+				$("#charts").html(data);
+			});
+		});
 	</script>
 	<!--scrolling js-->
 	<script src="js/jquery.nicescroll.js"></script>

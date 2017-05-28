@@ -49,6 +49,18 @@
 										</div>
 									</td>
 								</tr>
+								<script>
+								$("#onoff").bootstrapSwitch();
+								$("#onoff").on('switchChange.bootstrapSwitch', function (e, state){
+									if(state){
+										$.get("ActionServlet?stat=onoff&isoff=1&deviceId=${device.deviceId}",function(data){
+										});
+									}else{
+										$.get("ActionServlet?stat=onoff&isoff=0&deviceId=${device.deviceId}",function(data){
+										});
+									}
+								});
+								</script>
 							</c:forEach>
 						</tbody>
 					</table>
@@ -80,7 +92,7 @@
 				classie.toggle(showLeftPush, 'disabled');
 			}
 		}
-		$("#onoff").bootstrapSwitch();
+				
 	</script>
 	<!--scrolling js-->
 	<script src="js/jquery.nicescroll.js"></script>

@@ -10,7 +10,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import lzj.DaoImpl.DeviceTypeDaoImpl;
 import lzj.entity.Device;
+import lzj.entity.DeviceType;
 import lzj.entity.User;
 
 /**
@@ -34,9 +36,9 @@ public class PageServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String stat = request.getParameter("stat");
+
 		String url = null;
-		if (stat.equals("onoff")) {// 获取开关控制列表
-			System.out.println("onoff");
+		if (stat.equals("onoffControl")) {// 开关控制界面
 			List<Device> deviceList = new ArrayList<>();
 			User user = (User) request.getSession().getAttribute("userObj");
 			for (Device device : user.getDeviceList()) {
@@ -46,6 +48,15 @@ public class PageServlet extends HttpServlet {
 			}
 			request.setAttribute("deviceList", deviceList);
 			url = "OnOffControl.jsp";
+		}
+		if (stat.equals("deviceAdd")) {// 设备添加界面
+			List<DeviceType> deviceTypeList = new DeviceTypeDaoImpl().findAllDevicetype();
+			request.setAttribute("deviceTypeList", deviceTypeList);
+			
+			
+			
+			
+			url = "deviceAdd.jsp";
 		}
 
 		request.getRequestDispatcher(url).forward(request, response);

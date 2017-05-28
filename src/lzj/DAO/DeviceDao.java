@@ -1,6 +1,8 @@
 package lzj.DAO;
 
 import java.util.ArrayList;
+import java.util.List;
+
 import lzj.entity.Device;
 
 public interface DeviceDao {
@@ -15,4 +17,6 @@ public interface DeviceDao {
 	public int statChange(String stat, int deviceId);
 
 	public void flashOnlineTime(ArrayList<Device> deviceList);
+
+	public List<Integer> gpioLess(int uid);
 }
