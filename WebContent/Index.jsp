@@ -17,8 +17,6 @@
 		<div class="clearfix"></div>
 	</div>
 	<%@ include file="righthead.html"%>
-	<div class="clearfix"></div>
-	</div>
 	<!-- main content start-->
 	<div id="page-wrapper">
 		<div class="main-page">
@@ -157,7 +155,6 @@
 			<div class="cal1"></div>
 		</div>
 		<div class="clearfix"></div>
-	</div>
 	</div>
 	<!--footer-->
 	<%@ include file="footinclude.html"%>

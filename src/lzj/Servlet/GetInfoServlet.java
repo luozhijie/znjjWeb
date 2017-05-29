@@ -45,6 +45,9 @@ public class GetInfoServlet extends HttpServlet {
 			for (Device device : deviceList) {
 				if (device.getDeviceType().getDeviceTypeId() == 3) {
 					List<Temp> tempList = tempDao.findTempByDeviceIdAndLimit(device.getDeviceId(), 30);
+					if (tempList == null) {
+						break;
+					}
 					sb.append("<div class='charts-grids states-mdl'>" + "" + "<h4 class='title'>"
 							+ device.getDeviceName() + "</h4>" + "<canvas id='" + device.getDeviceName()
 							+ "' height='300' width='800'></canvas>" + "</div>" + "<div class='clearfix'></div>"
@@ -72,7 +75,6 @@ public class GetInfoServlet extends HttpServlet {
 				}
 			}
 		}
-
 		response.getWriter().println(sb);
 	}
 

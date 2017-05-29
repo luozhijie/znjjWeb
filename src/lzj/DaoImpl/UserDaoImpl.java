@@ -3,6 +3,8 @@ package lzj.DaoImpl;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import lzj.DAO.BaseDao;
 import lzj.DAO.DeviceDao;
@@ -43,21 +45,26 @@ public class UserDaoImpl extends BaseDao implements UserDao {
 		User user = null;
 		String sql = "SELECT * FROM znjj.view_user_list where user_id=?;";
 		ResultSet rs = this.execeuteQuary(sql, new Object[] { id });
-		ArrayList<TeleControl> teleControlList = new ArrayList<>();
+		HashMap<String, ArrayList<TeleControl>> teleControlMap = new HashMap<>();
 		try {
 			if (rs.next()) {
 				ArrayList<Device> deviceList = deviceDao.findDeviceByUserId(rs.getInt("user_id"));
 				for (Device device : deviceList) {
 					if (device.getDeviceType().getDeviceTypeId() == 1) {
-						TeleControl teleControl = teleControlDao.findTeleControlByDeviceId(device.getDeviceId()).get(0);
-						teleControlList.add(teleControl);
+						ArrayList<TeleControl> teleControls = teleControlDao
+								.findTeleControlByDeviceId(device.getDeviceId());
+						teleControlMap.put(device.getDeviceName(), teleControls);
 					}
 				}
 			}
-			user = new User(rs.getInt("user_id"), rs.getString("user_name"), rs.getString("user_password"),
-					new UserType(rs.getInt("user_type"), rs.getString("user_type_name")),
-					deviceDao.findDeviceByUserId(rs.getInt("user_id")), teleControlList,
-					rs.getString("user_icon") == null ? "default.jpg" : rs.getString("user_icon"));
+			user = new User();
+			user.setDeviceList(deviceDao.findDeviceByUserId(rs.getInt("user_id")));
+			user.setIconName(rs.getString("user_icon") == null ? "default.jpg" : rs.getString("user_icon"));
+			user.setTeleControlMap(teleControlMap);
+			user.setUserId(rs.getInt("user_id"));
+			user.setUserName(rs.getString("user_name"));
+			user.setUserPassWord(rs.getString("user_password"));
+			user.setUserType(new UserType(rs.getInt("user_type"), rs.getString("user_type_name")));
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -73,21 +80,26 @@ public class UserDaoImpl extends BaseDao implements UserDao {
 		TeleControlDao teleControlDao = new TeleControlDaoImpl();
 		String sql = "SELECT * FROM znjj.view_user_list;";
 		ResultSet rs = this.execeuteQuary(sql, null);
-		ArrayList<TeleControl> teleControlList = new ArrayList<>();
+		HashMap<String, ArrayList<TeleControl>> teleControlMap = new HashMap<>();
 		ArrayList<User> userList = new ArrayList<>();
 		try {
 			while (rs.next()) {
 				ArrayList<Device> deviceList = deviceDao.findDeviceByUserId(rs.getInt("user_id"));
 				for (Device device : deviceList) {
 					if (device.getDeviceType().getDeviceTypeId() == 1) {
-						TeleControl teleControl = teleControlDao.findTeleControlByDeviceId(device.getDeviceId()).get(0);
-						teleControlList.add(teleControl);
+						ArrayList<TeleControl> teleControls = teleControlDao
+								.findTeleControlByDeviceId(device.getDeviceId());
+						teleControlMap.put(device.getDeviceName(), teleControls);
 					}
 				}
-				User user = new User(rs.getInt("user_id"), rs.getString("user_name"), rs.getString("user_password"),
-						new UserType(rs.getInt("user_type"), rs.getString("user_type_name")),
-						deviceDao.findDeviceByUserId(rs.getInt("user_id")), teleControlList,
-						rs.getString("user_icon") == null ? "default.jpg" : rs.getString("user_icon"));
+				User user = new User();
+				user.setDeviceList(deviceDao.findDeviceByUserId(rs.getInt("user_id")));
+				user.setIconName(rs.getString("user_icon") == null ? "default.jpg" : rs.getString("user_icon"));
+				user.setTeleControlMap(teleControlMap);
+				user.setUserId(rs.getInt("user_id"));
+				user.setUserName(rs.getString("user_name"));
+				user.setUserPassWord(rs.getString("user_password"));
+				user.setUserType(new UserType(rs.getInt("user_type"), rs.getString("user_type_name")));
 				userList.add(user);
 			}
 
@@ -111,22 +123,28 @@ public class UserDaoImpl extends BaseDao implements UserDao {
 		User user = null;
 		String sql = "SELECT * FROM znjj.view_user_list where user_name=? and user_password=?;";
 		ResultSet rs = this.execeuteQuary(sql, new Object[] { username, password });
-		ArrayList<TeleControl> teleControlList = new ArrayList<>();
+		HashMap<String, ArrayList<TeleControl>> teleControlMap = new HashMap<>();
+		ArrayList<User> userList = new ArrayList<>();
 		try {
-			if (rs.next()) {
+			while (rs.next()) {
 				ArrayList<Device> deviceList = deviceDao.findDeviceByUserId(rs.getInt("user_id"));
 				for (Device device : deviceList) {
 					if (device.getDeviceType().getDeviceTypeId() == 1) {
-						TeleControl teleControl = teleControlDao.findTeleControlByDeviceId(device.getDeviceId()).get(0);
-						teleControlList.add(teleControl);
+						ArrayList<TeleControl> teleControls = teleControlDao
+								.findTeleControlByDeviceId(device.getDeviceId());
+						teleControlMap.put(device.getDeviceName(), teleControls);
 					}
 				}
+				user = new User();
+				user.setDeviceList(deviceDao.findDeviceByUserId(rs.getInt("user_id")));
+				user.setIconName(rs.getString("user_icon") == null ? "default.jpg" : rs.getString("user_icon"));
+				user.setTeleControlMap(teleControlMap);
+				user.setUserId(rs.getInt("user_id"));
+				user.setUserName(rs.getString("user_name"));
+				user.setUserPassWord(rs.getString("user_password"));
+				user.setUserType(new UserType(rs.getInt("user_type"), rs.getString("user_type_name")));
+				userList.add(user);
 			}
-			user = new User(rs.getInt("user_id"), rs.getString("user_name"), rs.getString("user_password"),
-					new UserType(rs.getInt("user_type"), rs.getString("user_type_name")),
-					deviceDao.findDeviceByUserId(rs.getInt("user_id")), teleControlList,
-					rs.getString("user_icon") == null ? "default.jpg" : rs.getString("user_icon"));
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -142,22 +160,28 @@ public class UserDaoImpl extends BaseDao implements UserDao {
 		User user = null;
 		String sql = "SELECT * FROM znjj.view_user_list where user_name=?";
 		ResultSet rs = this.execeuteQuary(sql, new Object[] { username });
-		ArrayList<TeleControl> teleControlList = new ArrayList<>();
+		HashMap<String, ArrayList<TeleControl>> teleControlMap = new HashMap<>();
+		ArrayList<User> userList = new ArrayList<>();
 		try {
 			if (rs.next()) {
 				ArrayList<Device> deviceList = deviceDao.findDeviceByUserId(rs.getInt("user_id"));
 				for (Device device : deviceList) {
 					if (device.getDeviceType().getDeviceTypeId() == 1) {
-						TeleControl teleControl = teleControlDao.findTeleControlByDeviceId(device.getDeviceId()).get(0);
-						teleControlList.add(teleControl);
+						ArrayList<TeleControl> teleControls = teleControlDao
+								.findTeleControlByDeviceId(device.getDeviceId());
+						teleControlMap.put(device.getDeviceName(), teleControls);
 					}
 				}
+				user = new User();
+				user.setDeviceList(deviceDao.findDeviceByUserId(rs.getInt("user_id")));
+				user.setIconName(rs.getString("user_icon") == null ? "default.jpg" : rs.getString("user_icon"));
+				user.setTeleControlMap(teleControlMap);
+				user.setUserId(rs.getInt("user_id"));
+				user.setUserName(rs.getString("user_name"));
+				user.setUserPassWord(rs.getString("user_password"));
+				user.setUserType(new UserType(rs.getInt("user_type"), rs.getString("user_type_name")));
+				userList.add(user);
 			}
-			user = new User(rs.getInt("user_id"), rs.getString("user_name"), rs.getString("user_password"),
-					new UserType(rs.getInt("user_type"), rs.getString("user_type_name")),
-					deviceDao.findDeviceByUserId(rs.getInt("user_id")), teleControlList,
-					rs.getString("user_icon") == null ? "default.jpg" : rs.getString("user_icon"));
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {

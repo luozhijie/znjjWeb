@@ -17,26 +17,24 @@
 		<div class="clearfix"></div>
 	</div>
 	<%@ include file="righthead.html"%>
-	<div class="clearfix"></div>
 	<!-- main content start-->
 	<div id="page-wrapper">
-
 		<div class="forms">
 			<div class="main-page">
 				<h3 class="title1">添加设备：</h3>
 				<div class="form-three widget-shadow">
-					<form class="form-horizontal">
+					<div class="form-horizontal">
 						<div class="form-group">
 							<label for="focusedinput" class="col-sm-2 control-label">设备名称：</label>
 							<div class="col-sm-8">
-								<input type="text" class="form-control1" id="focusedinput"
-									placeholder="请输入设备名称（自取）">
+								<input id="deviceName" type="text" class="form-control1"
+									id="focusedinput" placeholder="请输入设备名称（自取名）">
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="col-sm-2 control-label">设备类型</label>
 							<div class="col-sm-8">
-								<select multiple="" class="form-control1">
+								<select id="deviceType" multiple="" class="form-control1">
 									<c:forEach items="${deviceTypeList }" var="deviceType">
 										<option value="${deviceType.deviceTypeId }">${deviceType.deviceTypeName }</option>
 									</c:forEach>
@@ -46,20 +44,18 @@
 						<div class="form-group">
 							<label class="col-sm-2 control-label">GPIO</label>
 							<div class="col-sm-8">
-								<select multiple="" class="form-control1">
-									<option>Option 1</option>
-									<option>Option 2</option>
-									<option>Option 3</option>
-									<option>Option 4</option>
-									<option>Option 5</option>
+								<select id="gpio" multiple="" class="form-control1">
+									<c:forEach items="${gpioLessList }" var="gpioLess">
+										<option value="${gpioLess }">${gpioLess }</option>
+									</c:forEach>
 								</select>
 							</div>
 						</div>
 						<div class="form-group" align="center">
-							<button type="submit" class="btn btn-default">提交</button>
+							<button id="submit" type="submit" class="btn btn-default">提交</button>
 							<button type="submit" class="btn btn-default">重置</button>
 						</div>
-					</form>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -84,11 +80,15 @@
 				classie.toggle(showLeftPush, 'disabled');
 			}
 		}
-		$(document).ready(function() {
-			$.get("GetInfoServlet?stat=temp", function(data) {
-				$("#charts").html(data);
-			});
-		});
+		$("#submit").click(
+				function() {
+					$.get("ActionServlet?stat=deviceAdd&deviceName="
+							+ $("#deviceName").val() + "&deviceType="
+							+ $("#deviceType").val() + "&gpio="
+							+ $("#gpio").val(), function(data, status) {
+						alert(data);
+					});
+				});
 	</script>
 	<!--scrolling js-->
 	<script src="js/jquery.nicescroll.js"></script>

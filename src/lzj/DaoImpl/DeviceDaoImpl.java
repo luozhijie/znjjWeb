@@ -21,7 +21,7 @@ public class DeviceDaoImpl extends BaseDao implements DeviceDao {
 
 	@Override
 	public int delDeviceById(int id) {
-		return this.exceuteUpdate("DELETE FROM `znjj`.` device_list` WHERE `device_id`=?;", new Object[] { id });
+		return this.exceuteUpdate("DELETE FROM `znjj`.`device_list` WHERE `device_id`=?;", new Object[] { id });
 	}
 
 	@Override

@@ -1,6 +1,7 @@
 package lzj.entity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class User {
 	private int userId;
@@ -8,7 +9,7 @@ public class User {
 	private String userPassWord;
 	private UserType userType;
 	private ArrayList<Device> deviceList;
-	private ArrayList<TeleControl> teleControlList;
+	private HashMap<String, ArrayList<TeleControl>> teleControlMap;
 	private String iconName;
 
 	public User() {
@@ -16,14 +17,14 @@ public class User {
 	}
 
 	public User(int userId, String userName, String userPassWord, UserType userType, ArrayList<Device> deviceList,
-			ArrayList<TeleControl> teleControlList, String iconName) {
+			HashMap<String, ArrayList<TeleControl>> teleControlMap, String iconName) {
 		super();
 		this.userId = userId;
 		this.userName = userName;
 		this.userPassWord = userPassWord;
 		this.userType = userType;
 		this.deviceList = deviceList;
-		this.teleControlList = teleControlList;
+		this.teleControlMap = teleControlMap;
 		this.iconName = iconName;
 	}
 
@@ -67,12 +68,12 @@ public class User {
 		this.deviceList = deviceList;
 	}
 
-	public ArrayList<TeleControl> getTeleControlList() {
-		return teleControlList;
+	public HashMap<String, ArrayList<TeleControl>> getTeleControlMap() {
+		return teleControlMap;
 	}
 
-	public void setTeleControlList(ArrayList<TeleControl> teleControlList) {
-		this.teleControlList = teleControlList;
+	public void setTeleControlMap(HashMap<String, ArrayList<TeleControl>> teleControlMap) {
+		this.teleControlMap = teleControlMap;
 	}
 
 	public String getIconName() {
@@ -86,7 +87,7 @@ public class User {
 	@Override
 	public String toString() {
 		return "User [userId=" + userId + ", userName=" + userName + ", userPassWord=" + userPassWord + ", userType="
-				+ userType + ", deviceList=" + deviceList + ", teleControlList=" + teleControlList + ", iconName="
+				+ userType + ", deviceList=" + deviceList + ", teleControlList=" + teleControlMap + ", iconName="
 				+ iconName + "]";
 	}
 

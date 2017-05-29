@@ -19,4 +19,5 @@ public interface DeviceDao {
 	public void flashOnlineTime(ArrayList<Device> deviceList);
 
 	public List<Integer> gpioLess(int uid);
+	
 }

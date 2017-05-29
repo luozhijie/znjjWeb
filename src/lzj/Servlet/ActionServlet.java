@@ -109,14 +109,6 @@ public class ActionServlet extends HttpServlet {
 			response.getWriter().println(isok);
 			return;
 		}
-		if (stat.equals("looktemp")) {
-			int deviceId = Integer.valueOf(request.getParameter("deviceId"));
-			TempDao tempDao = new TempDaoImpl();
-			List<Temp> tempList = tempDao.findTempByDeviceIdAndLimit(deviceId, 10);
-			request.setAttribute("tempList", tempList);
-			url = "LookTmpDry.jsp";
-
-		}
 		if (stat.equals("register")) {
 			// 注册处理动作
 			String username = request.getParameter("username");
@@ -138,12 +130,50 @@ public class ActionServlet extends HttpServlet {
 				return;
 			}
 		}
-		if (stat.equals("addDevice")) {
+		if (stat.equals("deviceAdd")) {
 			// 添加设备
-			DeviceTypeDao deviceTypeDao = new DeviceTypeDaoImpl();
-			List<DeviceType> deviceTypeList = deviceTypeDao.findAllDevicetype();
-			request.setAttribute("deviceTypeList", deviceTypeList);
-			url = "AddDevice.jsp";
+			User user = (User) request.getSession().getAttribute("userObj");
+			String deviceName = request.getParameter("deviceName");
+			int deviceType = Integer.valueOf(request.getParameter("deviceType"));
+			int GPIO = Integer.valueOf(request.getParameter("gpio"));
+			DeviceDao deviceDao = new DeviceDaoImpl();
+			int i = deviceDao.addDevice(
+					new Device(0, user.getUserId(), deviceName, null, new DeviceType(deviceType, null), null, GPIO));
+			if (i > 0) {
+				response.getWriter().print("添加成功");
+				flash(request, response);
+			} else {
+				response.getWriter().print("添加失败");
+			}
+			return;
+		}
+		if (stat.equals("deviceDel")) {
+			// 删除设备
+			User user = (User) request.getSession().getAttribute("userObj");
+			int did = Integer.valueOf(request.getParameter("did"));
+			System.out.println(did);
+			List<Device> deviceList = user.getDeviceList();
+			int tag1 = 0;
+			for (Device device : deviceList) {
+				if (device.getDeviceId() == did) {
+					tag1++;
+					break;
+				}
+			}
+			if (tag1 == 0) {
+				response.getWriter().print("非法操作");
+				return;
+			}
+
+			DeviceDao deviceDao = new DeviceDaoImpl();
+			int tag2 = deviceDao.delDeviceById(did);
+			if (tag2 > 0) {
+				response.getWriter().print("删除成功");
+				flash(request, response);
+			} else {
+				response.getWriter().print("删除失败，请稍后再试");
+			}
+			return;
 		}
 		if (stat.equals("addDeviceAction")) {
 			// 添加设备动作
