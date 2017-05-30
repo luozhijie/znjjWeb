@@ -16,12 +16,12 @@ import lzj.entity.User;
  * Servlet Filter implementation class NomalFilter
  */
 @WebFilter(filterName = "/NomalFilter", urlPatterns = "/*")
-public class NomalFilter implements Filter {
+public class NormalFilter implements Filter {
 
 	/**
 	 * Default constructor.
 	 */
-	public NomalFilter() {
+	public NormalFilter() {
 	}
 
 	/**

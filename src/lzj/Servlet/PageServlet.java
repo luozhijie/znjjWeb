@@ -46,7 +46,7 @@ public class PageServlet extends HttpServlet {
 				}
 			}
 			request.setAttribute("deviceList", deviceList);
-			url = "OnOffControl.jsp";
+			url = "onOffControl.jsp";
 		}
 		if (stat.equals("deviceAdd")) {// 设备添加界面
 			List<DeviceType> deviceTypeList = new DeviceTypeDaoImpl().findAllDevicetype();
@@ -59,12 +59,12 @@ public class PageServlet extends HttpServlet {
 		if (stat.equals("deviceDel")) {
 			// 删除设备
 			request.setAttribute("deviceList", user.getDeviceList());
-			url = "DeviceDel.jsp";
+			url = "deviceDel.jsp";
 		}
 		if (stat.equals("deviceEdit")) {
 			// 修改设备
 			request.setAttribute("deviceList", user.getDeviceList());
-			url = "DeviceEdit.jsp";
+			url = "deviceEdit.jsp";
 		}
 
 		request.getRequestDispatcher(url).forward(request, response);
