@@ -25,8 +25,8 @@ public class WarningInfoSearch {
 				List<GasSensor> gasSensorList = gasSensorDao.findGasWarningByDeviceId(device.getDeviceId());
 				if (gasSensorList != null) {
 					for (GasSensor gasSensor : gasSensorList) {
-						warningList
-								.add(new Warning(gasSensor.getTime(), device.getDeviceType(), device.getDeviceName()));
+						warningList.add(
+								new Warning(gasSensor.getDeviceId(),gasSensor.getGid(), gasSensor.getTime(), device.getDeviceType(), device.getDeviceName()));
 					}
 				}
 				break;
@@ -35,8 +35,8 @@ public class WarningInfoSearch {
 						.findWarningBodySensorByDeviceId(device.getDeviceId());
 				if (bodySensorInfoList != null) {
 					for (BodySensorInfo bodySensorInfo : bodySensorInfoList) {
-						warningList.add(
-								new Warning(bodySensorInfo.getTime(), device.getDeviceType(), device.getDeviceName()));
+						warningList.add(new Warning(bodySensorInfo.getDeviceId(),bodySensorInfo.getBid(), bodySensorInfo.getTime(), device.getDeviceType(),
+								device.getDeviceName()));
 					}
 				}
 				break;

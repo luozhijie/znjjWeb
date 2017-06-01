@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>开关控制</title>
+<title>警告处理</title>
 <%@ include file="headinclude.html"%>
 </head>
 <body class="cbp-spmenu-push">
@@ -20,56 +20,57 @@
 	<!-- main content start-->
 	<div id="page-wrapper">
 		<div class="main-page">
-			<div class="tables">
-				<h3 class="title1">开关控制</h3>
-				<div class="panel-body widget-shadow">
-					<h4>开关列表:</h4>
-					<table class="table">
-						<thead>
-							<tr>
-								<th>#</th>
-								<th>开关名称</th>
-								<th>GPIO</th>
-								<th>设备在线时间</th>
-								<th>操作</th>
-							</tr>
-						</thead>
-						<tbody>
-							<c:forEach items="${deviceList }" var="device">
+
+
+			<div class="panel panel-danger">
+				<div class="panel-heading">
+					<h3 class="panel-title">警告处理</h3>
+				</div>
+				<div class="panel-body">
+					<div class="panel-body widget-shadow">
+						<table class="table">
+							<thead>
 								<tr>
-									<th scope="row">${device.deviceId }</th>
-									<td>${device.deviceName }</td>
-									<td>${device.device_gpio }</td>
-									<td>${device.device_onLine }</td>
-									<td>
-										<div class="switch">
-											<input id="onoff${device.deviceId }" type="checkbox"
-												${device.deviceStat == 0 ? '' : 'checked' } />
-										</div>
-									</td>
+									<th>#</th>
+									<th>设备ID</th>
+									<th>警告ID</th>
+									<th>设备类型</th>
+									<th>时间</th>
+									<th>操作</th>
 								</tr>
-								<script>
-								$("#onoff${device.deviceId }").bootstrapSwitch();
-								$("#onoff${device.deviceId }").on('switchChange.bootstrapSwitch', function (e, state){
-									if(state){
-										$.get("ActionServlet?stat=onoff&isoff=1&deviceId=${device.deviceId}",function(data){
+							</thead>
+							<tbody>
+								<c:forEach items="${warningList }" var="warning">
+									<tr>
+										<td>${warning.did }</td>
+										<td>${warning.wid }</td>
+										<td>${warning.deviceName }</td>
+										<td>${warning.deviceType.deviceTypeName }</td>
+										<td>${warning.times }</td>
+										<td>
+											<button id="read${warning.wid }and${warning.did }" type="button" class="btn btn-primary">确认</button>
+										</td>
+									</tr>
+									<script>
+										$("#read${warning.wid }and${warning.did }").click(function(){
+											$.get("",function(data,status){
+												
+											});
 										});
-									}else{
-										$.get("ActionServlet?stat=onoff&isoff=0&deviceId=${device.deviceId}",function(data){
-										});
-									}
-								});
-								</script>
-							</c:forEach>
-						</tbody>
-					</table>
+									</script>
+								</c:forEach>
+							</tbody>
+						</table>
+					</div>
 				</div>
 			</div>
+
+
+
+			<div class="clearfix"></div>
 		</div>
+		<div class="clearfix"></div>
 	</div>
-
-
-
 	<!--footer-->
 	<%@ include file="footinclude.html"%>
 	<!--//footer-->
@@ -78,20 +79,17 @@
 	<script>
 		var menuLeft = document.getElementById('cbp-spmenu-s1'), showLeftPush = document
 				.getElementById('showLeftPush'), body = document.body;
-
 		showLeftPush.onclick = function() {
 			classie.toggle(this, 'active');
 			classie.toggle(body, 'cbp-spmenu-push-toright');
 			classie.toggle(menuLeft, 'cbp-spmenu-open');
 			disableOther('showLeftPush');
 		};
-
 		function disableOther(button) {
 			if (button !== 'showLeftPush') {
 				classie.toggle(showLeftPush, 'disabled');
 			}
 		}
-				
 	</script>
 	<!--scrolling js-->
 	<script src="js/jquery.nicescroll.js"></script>

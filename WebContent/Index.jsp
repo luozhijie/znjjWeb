@@ -12,7 +12,7 @@
 <body class="cbp-spmenu-push">
 	<div class="main-content">
 		<!--left-fixed -navigation-->
-		<jsp:include page="navetion.html"></jsp:include>
+		<%@ include file="navetion.html"%>
 		<!--//end-search-box-->
 		<div class="clearfix"></div>
 	</div>
@@ -54,69 +54,6 @@
 				<div class="clearfix"></div>
 			</div>
 			<div id="charts" class="charts">
-				<div class="charts-grids states-mdl">
-					<h4 class="title">温湿度记录</h4>
-					<canvas id="line" height="300" width="800"> </canvas>
-				</div>
-				<div class="clearfix"></div>
-				<script>
-					var lineChartData = {
-						labels : [ "Jan", "Feb", "March", "April", "May",
-								"June", "July", "Jan", "Feb", "March", "April",
-								"May", "June", "July", "aaa" ],
-						datasets : [
-								{
-									fillColor : "rgba(242, 179, 63, 1)",
-									strokeColor : "#F2B33F",
-									pointColor : "rgba(242, 179, 63, 1)",
-									pointStrokeColor : "#fff",
-									data : [ 70, 60, 72, 61, 75, 59, 80, 70,
-											60, 72, 61, 75, 59, 80, 1.22 ]
-								},
-								{
-									fillColor : "rgba(97, 100, 193, 1)",
-									strokeColor : "#6164C1",
-									pointColor : "rgba(97, 100, 193,1)",
-									pointStrokeColor : "#9358ac",
-									data : [ 50, 65, 51, 67, 52, 64, 100, 50,
-											65, 51, 67, 52, 64, 50, 1.1 ]
-								} ]
-					};
-					new Chart(document.getElementById("line").getContext("2d"))
-							.Line(lineChartData);
-				</script>
-
-				<div class="charts-grids states-mdl">
-					<h4 class="title">温湿度记录</h4>
-					<canvas id="line1" height="300" width="800"> </canvas>
-				</div>
-				<div class="clearfix"></div>
-				<script>
-					var lineChartData = {
-						labels : [ "Jan", "Feb", "March", "April", "May",
-								"June", "July", "Jan", "Feb", "March", "April",
-								"May", "June", "July" ],
-						datasets : [
-								{
-									fillColor : "rgba(242, 179, 63, 1)",
-									strokeColor : "#F2B33F",
-									pointColor : "rgba(242, 179, 63, 1)",
-									pointStrokeColor : "#fff",
-									data : [ 70, 60, 72, 61, 75, 59, 80, 70,
-											60, 72, 61, 75, 59, 80 ]
-								},
-								{
-									fillColor : "rgba(97, 100, 193, 1)",
-									strokeColor : "#6164C1",
-									pointColor : "rgba(97, 100, 193,1)",
-									pointStrokeColor : "#9358ac",
-									data : [ 50, 65, 51, 67, 52, 64, 100, 50,
-											65, 51, 67, 52, 64, 50 ]
-								} ]
-					};
-					new Chart(document.getElementById("line1").getContext("2d"))
-							.Line(lineChartData);
-				</script>
 
 			</div>
 			<div class="row">

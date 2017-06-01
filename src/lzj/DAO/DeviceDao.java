@@ -20,4 +20,5 @@ public interface DeviceDao {
 
 	public List<Integer> gpioLess(int uid);
 	
+	public Device findDeviceBydid(int did);
 }

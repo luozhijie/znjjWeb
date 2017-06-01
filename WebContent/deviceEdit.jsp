@@ -12,7 +12,7 @@
 <body class="cbp-spmenu-push">
 	<div class="main-content">
 		<!--left-fixed -navigation-->
-		<jsp:include page="navetion.html"></jsp:include>
+		<%@ include file="navetion.html"%>
 		<!--//end-search-box-->
 		<div class="clearfix"></div>
 	</div>
@@ -39,18 +39,109 @@
 							<c:forEach items="${deviceList }" var="device">
 								<tr id="tr${device.deviceId }">
 									<th scope="row">${device.deviceId }</th>
-									<td>${device.deviceName }</td>
-									<td>${device.deviceType.deviceTypeName }</td>
+									<td id="tdDeviceName${device.deviceId }">${device.deviceName }</td>
+									<td id="tdDeviceType${device.deviceId }">${device.deviceType.deviceTypeName }</td>
 									<td>${device.device_onLine }</td>
-									<td>${device.device_gpio }</td>
-									<td><button id="edit${device.deviceId }"
-											value="${device.deviceId }" class="btn btn-danger">编辑</button></td>
+									<td id="tdDeviceGPIO">${device.device_gpio }</td>
+									<td>
+										<!-- 按钮触发模态框 -->
+										<button class="btn btn-primary btn-sm" data-toggle="modal"
+											data-target="#edit${device.deviceId }">编辑</button>
+									</td>
 								</tr>
-								<script>
-									$("#edit${device.deviceId }").click(function() {
-										
-									});
-								</script>
+								<!-- 模态框（Modal） -->
+								<div class="modal fade" id="edit${device.deviceId }"
+									tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+									aria-hidden="true">
+									<div class="modal-dialog">
+										<div class="modal-content">
+											<div class="modal-header">
+												<button type="button" class="close" data-dismiss="modal"
+													aria-hidden="true">&times;</button>
+												<h4 class="modal-title">${device.deviceName }</h4>
+											</div>
+											<div class="modal-body">
+
+
+
+
+												<div class="form-three widget-shadow">
+													<div class="form-horizontal">
+														<div class="form-group">
+															<label for="focusedinput" class="col-sm-2 control-label">设备名称：</label>
+															<div class="col-sm-8">
+																<input id="deviceName${device.deviceId }" type="text"
+																	class="form-control1" placeholder="请输入设备名称（自取名）"
+																	value="${device.deviceName }" />
+															</div>
+														</div>
+														<div class="form-group">
+															<label class="col-sm-2 control-label">设备类型</label>
+															<div class="col-sm-8">
+																<select id="deviceType${device.deviceId }" multiple=""
+																	class="form-control1">
+																	<c:forEach items="${deviceTypeList }" var="deviceType">
+																		<c:if
+																			test="${deviceType.deviceTypeId==device.deviceType.deviceTypeId }">
+																			<option selected="selected"
+																				value="${deviceType.deviceTypeId }">${deviceType.deviceTypeName }</option>
+																		</c:if>
+																		<c:if
+																			test="${deviceType.deviceTypeId!=device.deviceType.deviceTypeId }">
+																			<option value="${deviceType.deviceTypeId }">${deviceType.deviceTypeName }</option>
+																		</c:if>
+																	</c:forEach>
+																</select>
+															</div>
+														</div>
+														<div class="form-group">
+															<label class="col-sm-2 control-label">GPIO</label>
+															<div class="col-sm-8">
+																<select id="gpio${device.deviceId }" multiple=""
+																	class="form-control1">
+																	<option selected="selected"
+																		value="${device.device_gpio }">${device.device_gpio }</option>
+																	<c:forEach items="${gpioLessList }" var="gpioLess">
+																		<option value="${gpioLess }">${gpioLess }</option>
+																	</c:forEach>
+																</select>
+															</div>
+														</div>
+													</div>
+												</div>
+
+
+
+
+
+											</div>
+											<div class="modal-footer">
+												<button id="close" type="button" class="btn btn-default"
+													data-dismiss="modal">关闭</button>
+												<button id="editbutton${device.deviceId }" type="button"
+													class="btn btn-primary">提交更改</button>
+											</div>
+											<script>
+												$("#editbutton${device.deviceId }").click(
+												function() {
+													$.get("ActionServlet?stat=deviceEdit&deviceName="+$("#deviceName${device.deviceId }").val()+"&deviceType="+$("#deviceType${device.deviceId }").val()+"&gpio="+$("#gpio${device.deviceId }").val()+"&did="+${device.deviceId },function(data,status){
+														if(data == "更改成功"){
+															//$("#tdDeviceName${device.deviceId }").val($("#deviceName${device.deviceId }").val());
+															//$("#tdDeviceType${device.deviceId }").val($("#deviceType${device.deviceId }").val());
+															//$("#tdDeviceGPIO${device.deviceId }").val($("#gpio${device.deviceId }").val());
+															history.go(0);
+														}else{
+															alert(data);
+														}
+													});
+												});
+											</script>
+										</div>
+										<!-- /.modal-content -->
+									</div>
+									<!-- /.modal -->
+								</div>
+
 							</c:forEach>
 						</tbody>
 					</table>

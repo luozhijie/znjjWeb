@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE HTML>
 <html>
 <head>
@@ -36,53 +38,44 @@
 </script>
 </head>
 <body class="cbp-spmenu-push">
-	<div class="main-content">
-		<jsp:include page="navetion.html"></jsp:include>
-		<!--//end-search-box-->
-		<div class="clearfix"></div>
-	</div>
-	<div class="clearfix"></div>
-	<!-- //header-ends -->
 	<!-- main content start-->
-	<div id="page-wrapper">
-		<div class="main-page signup-page">
-			<h3 class="title1">注册</h3>
-			<p class="creating">欢迎注册</p>
-			<div class="sign-up-row widget-shadow">
-				<h5>用户信息</h5>
-				<div class="sign-u">
-					<div class="sign-up1">
-						<h4>用户名:</h4>
-					</div>
-					<div class="sign-up2">
-						<input type="text" id="username" name="username" required>
-					</div>
-					<div class="clearfix"></div>
+	<div class="main-page signup-page">
+		<h3 class="title1">注册</h3>
+		<p class="creating">欢迎注册</p>
+		<div class="sign-up-row widget-shadow">
+			<h5>用户信息</h5>
+			<div class="sign-u">
+				<div class="sign-up1">
+					<h4>用户名:</h4>
 				</div>
-				<h6>登录验证:</h6>
-				<div class="sign-u">
-					<div class="sign-up1">
-						<h4>密码:</h4>
-					</div>
-					<div class="sign-up2">
-						<input type="password" id="pwd" name="pwd" required>
-					</div>
-					<div class="clearfix"></div>
+				<div class="sign-up2">
+					<input type="text" id="username" name="username" required>
 				</div>
-				<div class="sign-u">
-					<div class="sign-up1">
-						<h4>确认密码:</h4>
-					</div>
-					<div class="sign-up2">
-						<input type="password" id="pwdcheck" name="pwdcheck" required>
-					</div>
-					<div class="clearfix"></div>
+				<div class="clearfix"></div>
+			</div>
+			<h6>登录验证:</h6>
+			<div class="sign-u">
+				<div class="sign-up1">
+					<h4>密码:</h4>
 				</div>
-				<div class="sub_home">
-					<input onclick="return register();" name="submit" type="submit"
-						value=" 提交 ">
-					<div class="clearfix"></div>
+				<div class="sign-up2">
+					<input type="password" id="pwd" name="pwd" required>
 				</div>
+				<div class="clearfix"></div>
+			</div>
+			<div class="sign-u">
+				<div class="sign-up1">
+					<h4>确认密码:</h4>
+				</div>
+				<div class="sign-up2">
+					<input type="password" id="pwdcheck" name="pwdcheck" required>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+			<div class="sub_home">
+				<input style="display:flex; text-align: center; margin: 0 auto;" onclick="return register();" name="submit" type="submit"
+					value="               提交">
+				<div class="clearfix"></div>
 			</div>
 		</div>
 	</div>

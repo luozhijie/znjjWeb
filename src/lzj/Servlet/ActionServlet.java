@@ -82,7 +82,6 @@ public class ActionServlet extends HttpServlet {
 			response.getWriter().close();
 			return;
 		}
-		System.out.println("run down");
 		if (stat.equals("flash")) {
 			// 刷新用户信息
 			this.flash(request, response);
@@ -151,7 +150,6 @@ public class ActionServlet extends HttpServlet {
 			// 删除设备
 			User user = (User) request.getSession().getAttribute("userObj");
 			int did = Integer.valueOf(request.getParameter("did"));
-			System.out.println(did);
 			List<Device> deviceList = user.getDeviceList();
 			int tag1 = 0;
 			for (Device device : deviceList) {
@@ -175,22 +173,56 @@ public class ActionServlet extends HttpServlet {
 			}
 			return;
 		}
-		if (stat.equals("addDeviceAction")) {
-			// 添加设备动作
+		if (stat.equals("deviceEdit")) {
+			User user = (User) request.getSession().getAttribute("userObj");
 			String deviceName = request.getParameter("deviceName");
-			int deviceTypeId = Integer.valueOf(request.getParameter("deviceTypeId"));
-			int gpio = Integer.valueOf(request.getParameter("gpio"));
-			Device device = new Device();
-			device.setDeviceName(deviceName);
-			device.setDeviceType(new DeviceType(deviceTypeId, null));
-			device.setDevice_gpio(gpio);
-			device.setUserId(((User) request.getSession().getAttribute("userObj")).getUserId());
+			System.out.println(deviceName);
+			int deviceType = Integer.valueOf(request.getParameter("deviceType"));
+			int GPIO = Integer.valueOf(request.getParameter("gpio"));
+			int did = Integer.valueOf(request.getParameter("did"));
 			DeviceDao deviceDao = new DeviceDaoImpl();
-			deviceDao.addDevice(device);
-			// response.sendRedirect("Index.jsp");
-			this.flash(request, response);
-			url = "Index.jsp";
+			Device device = deviceDao.findDeviceBydid(did);
+			if (device == null || user == null) {
+				response.getWriter().print("非法操作");
+				return;
+			}
+			device.setDeviceName(deviceName);
+			device.setDeviceType(new DeviceType(deviceType, null));
+			device.setDevice_gpio(GPIO);
+			System.out.println(device.toString());
+			int i = deviceDao.updateDevice(device);
+			if (i > 0) {
+				response.getWriter().print("更改成功");
+				flash(request, response);
+			} else {
+				response.getWriter().print("更改失败");
+			}
+			return;
 		}
+		if (stat.equals("warningCheck")) {
+			int wid = Integer.valueOf(request.getParameter("wid"));
+			int type = Integer.valueOf(request.getParameter("type"));
+			GasSensorDao gasSensorDao = new GasSensorDaoImpl();
+			BodySensorInfoDao bodySensorInfoDao = new BodySensorInfoDaoImpl();
+			int tag = 0 ;
+			switch (type) {
+			case 4:
+				tag = gasSensorDao.updateGasSensorIsCheckByGid(wid);
+				break;
+			case 6:
+				tag = bodySensorInfoDao.updateBodySensorInfoCheckBybid(wid);
+				break;
+
+			default:
+				break;
+			}
+			if(tag>0){
+				response.getWriter().print("确认成功");
+			}else{
+				response.getWriter().print("确认失败");
+			}
+		}
+
 		if (stat.equals("gas")) {
 			// 可燃性传感器 页面
 			int deviceId = Integer.valueOf(request.getParameter("deviceId"));

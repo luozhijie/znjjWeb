@@ -14,7 +14,7 @@ public class DeviceDaoImpl extends BaseDao implements DeviceDao {
 
 	@Override
 	public int addDevice(Device device) {
-		String sql = "INSERT INTO `znjj`.`device_list` (`user_id`, ` device_name`, `device_type_id`, `device_gpio`) VALUES (?, ?, ?, ?);";
+		String sql = "INSERT INTO `znjj`.`device_list` (`user_id`, `device_name`, `device_type_id`, `device_gpio`) VALUES (?, ?, ?, ?);";
 		return this.exceuteUpdate(sql, new Object[] { device.getUserId(), device.getDeviceName(),
 				device.getDeviceType().getDeviceTypeId(), device.getDevice_gpio() });
 	}
@@ -26,10 +26,8 @@ public class DeviceDaoImpl extends BaseDao implements DeviceDao {
 
 	@Override
 	public int updateDevice(Device device) {
-		String sql = "UPDATE `znjj`.` device_list` SET `user_id`=?, ` device_name`=?, `device_stat`=?, `device_type_id`=?,`device_online`=now() WHERE `device_id`=?;";
-
-		return this.exceuteUpdate(sql, new Object[] { device.getUserId(), device.getDeviceName(),
-				device.getDeviceStat(), device.getDeviceType(), device.getDeviceId() });
+		String sql = "UPDATE `znjj`.`device_list` SET `device_name`=?, `device_type_id`=?, `device_gpio`=? WHERE `device_id`=?;";
+		return this.exceuteUpdate(sql, new Object[] { device.getDeviceName(),device.getDeviceType().getDeviceTypeId(),device.getDevice_gpio(), device.getDeviceId() });
 	}
 
 	@Override
@@ -63,7 +61,7 @@ public class DeviceDaoImpl extends BaseDao implements DeviceDao {
 	@Override
 	public void flashOnlineTime(ArrayList<Device> deviceList) {
 		for (Device device : deviceList) {// 刷新在线时间
-			this.exceuteUpdate("UPDATE `znjj`.`device_list` SET ` device_online`=now() WHERE `device_id`=?;",
+			this.exceuteUpdate("UPDATE `znjj`.`device_list` SET `device_online`=now() WHERE `device_id`=?;",
 					new Object[] { device.getDeviceId() });
 		}
 	}
@@ -87,6 +85,24 @@ public class DeviceDaoImpl extends BaseDao implements DeviceDao {
 	}
 
 	public static void main(String[] args) {
+	}
+
+	@Override
+	public Device findDeviceBydid(int did) {
+		String sql = "SELECT * FROM znjj.view_device where device_id = ?;";
+		ResultSet rs = this.execeuteQuary(sql, new Object[] { did });
+		Device device = null;
+		try {
+			if (rs.next()) {
+				device = new Device(rs.getInt("device_id"), rs.getInt("user_id"), rs.getString("device_name"),
+						rs.getString("device_stat"),
+						new DeviceType(rs.getInt("device_type_id"), rs.getString("device_type_name")),
+						rs.getString("device_online"), rs.getInt("device_gpio"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return device;
 	}
 
 }

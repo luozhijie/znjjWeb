@@ -2,6 +2,8 @@ package lzj.entity;
 
 public class Warning {
 
+	private int did; // 设备id
+	private int wid; //警告id
 	private String times;// 触发时间
 	private DeviceType deviceType;// 设备类型
 	private String deviceName;// 设备名称
@@ -9,11 +11,29 @@ public class Warning {
 	public Warning() {
 	}
 
-	public Warning(String times, DeviceType deviceType, String deviceName) {
+	public Warning(int did, int wid, String times, DeviceType deviceType, String deviceName) {
 		super();
+		this.did = did;
+		this.wid = wid;
 		this.times = times;
 		this.deviceType = deviceType;
 		this.deviceName = deviceName;
+	}
+
+	public int getDid() {
+		return did;
+	}
+
+	public void setDid(int did) {
+		this.did = did;
+	}
+
+	public int getWid() {
+		return wid;
+	}
+
+	public void setWid(int wid) {
+		this.wid = wid;
 	}
 
 	public String getTimes() {
@@ -42,7 +62,9 @@ public class Warning {
 
 	@Override
 	public String toString() {
-		return "Warning [times=" + times + ", deviceType=" + deviceType + ", deviceName=" + deviceName + "]";
+		return "Warning [did=" + did + ", wid=" + wid + ", times=" + times + ", deviceType=" + deviceType
+				+ ", deviceName=" + deviceName + "]";
 	}
+
 
 }

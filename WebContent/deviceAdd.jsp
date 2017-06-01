@@ -12,7 +12,7 @@
 <body class="cbp-spmenu-push">
 	<div class="main-content">
 		<!--left-fixed -navigation-->
-		<jsp:include page="navetion.html"></jsp:include>
+		<%@ include file="navetion.html"%>
 		<!--//end-search-box-->
 		<div class="clearfix"></div>
 	</div>

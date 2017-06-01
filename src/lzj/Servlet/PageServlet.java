@@ -14,6 +14,9 @@ import lzj.DaoImpl.DeviceTypeDaoImpl;
 import lzj.entity.Device;
 import lzj.entity.DeviceType;
 import lzj.entity.User;
+import lzj.entity.Warning;
+import lzj.tools.UserTools;
+import lzj.tools.WarningInfoSearch;
 
 /**
  * Servlet implementation class PageServlet
@@ -64,9 +67,18 @@ public class PageServlet extends HttpServlet {
 		if (stat.equals("deviceEdit")) {
 			// 修改设备
 			request.setAttribute("deviceList", user.getDeviceList());
+			List<DeviceType> deviceTypeList = new DeviceTypeDaoImpl().findAllDevicetype();
+			request.setAttribute("deviceTypeList", deviceTypeList);
+			DeviceDao deviceDao = new DeviceDaoImpl();
+			List<Integer> gpioLessList = deviceDao.gpioLess(user.getUserId());
+			request.setAttribute("gpioLessList", gpioLessList);
 			url = "deviceEdit.jsp";
 		}
-
+		if (stat.equals("warningCheck")) {
+			url = "warningCheck.jsp";
+		}
+		
+		UserTools.flashUser(request);
 		request.getRequestDispatcher(url).forward(request, response);
 	}
 
