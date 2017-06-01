@@ -35,7 +35,7 @@
 							</tr>
 						</thead>
 						<tbody>
-							<c:forEach items="${deviceList }" var="device">
+							<c:forEach items="${userObj.deviceList }" var="device">
 								<tr>
 									<th scope="row">${device.deviceId }</th>
 									<td>${device.deviceName }</td>

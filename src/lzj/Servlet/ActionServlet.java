@@ -31,6 +31,7 @@ import lzj.entity.User;
 import lzj.entity.UserType;
 import lzj.entity.Warning;
 import lzj.tools.TempTools;
+import lzj.tools.UserTools;
 import lzj.tools.WarningInfoSearch;
 
 /**
@@ -61,6 +62,7 @@ public class ActionServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String url = "";
+		response.setContentType("text/html; charset=utf-8");
 		String stat = request.getParameter("stat");
 		System.out.println(stat);
 		if (stat.equals("login")) {
@@ -218,9 +220,12 @@ public class ActionServlet extends HttpServlet {
 			}
 			if(tag>0){
 				response.getWriter().print("确认成功");
+				List<Warning> warningList = WarningInfoSearch.search((User)request.getSession().getAttribute("userObj"));
+				request.getSession().setAttribute("warningList", warningList);
 			}else{
 				response.getWriter().print("确认失败");
 			}
+			return;
 		}
 
 		if (stat.equals("gas")) {

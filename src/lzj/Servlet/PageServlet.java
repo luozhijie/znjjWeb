@@ -42,13 +42,7 @@ public class PageServlet extends HttpServlet {
 		User user = (User) request.getSession().getAttribute("userObj");
 		String url = null;
 		if (stat.equals("onoffControl")) {// 开关控制界面
-			List<Device> deviceList = new ArrayList<>();
-			for (Device device : user.getDeviceList()) {
-				if (device.getDeviceType().getDeviceTypeId() == 2) {
-					deviceList.add(device);
-				}
-			}
-			request.setAttribute("deviceList", deviceList);
+			UserTools.flashUser(request);
 			url = "onOffControl.jsp";
 		}
 		if (stat.equals("deviceAdd")) {// 设备添加界面

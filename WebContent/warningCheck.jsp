@@ -42,21 +42,35 @@
 							<tbody>
 								<c:forEach items="${warningList }" var="warning">
 									<tr>
-										<td>${warning.did }</td>
 										<td>${warning.wid }</td>
+										<td>${warning.did }</td>
 										<td>${warning.deviceName }</td>
 										<td>${warning.deviceType.deviceTypeName }</td>
 										<td>${warning.times }</td>
 										<td>
-											<button id="read${warning.wid }and${warning.did }" type="button" class="btn btn-primary">确认</button>
+											<button id="read${warning.wid }and${warning.did }"
+												type="button" class="btn btn-primary">确认</button>
 										</td>
 									</tr>
 									<script>
-										$("#read${warning.wid }and${warning.did }").click(function(){
-											$.get("",function(data,status){
-												
-											});
-										});
+										$(
+												"#read${warning.wid }and${warning.did }")
+												.click(
+														function() {
+															$
+																	.get(
+																			"ActionServlet?stat=warningCheck&wid=${warning.wid }&type=${warning.deviceType.deviceTypeId }",
+																			function(
+																					data,
+																					status) {
+																				if (data == "确认成功") {
+																					history
+																							.go(0);
+																				} else {
+																					alert(data);
+																				}
+																			});
+														});
 									</script>
 								</c:forEach>
 							</tbody>
