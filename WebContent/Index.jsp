@@ -88,7 +88,7 @@
 			<div class="clearfix"></div>
 		</div>
 		<div class="row calender widget-shadow">
-			<h4 class="title">Calender</h4>
+			<h4 class="title">日历</h4>
 			<div class="cal1"></div>
 		</div>
 		<div class="clearfix"></div>

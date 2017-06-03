@@ -81,13 +81,6 @@ public class ActionServlet extends HttpServlet {
 				// url = "login.jsp";
 				response.getWriter().write("用户名或密码不正确");
 			}
-			response.getWriter().close();
-			return;
-		}
-		if (stat.equals("flash")) {
-			// 刷新用户信息
-			this.flash(request, response);
-			url = "Index.jsp";
 		}
 		if (stat.equals("onoff")) {
 			// 开关控制
@@ -108,7 +101,6 @@ public class ActionServlet extends HttpServlet {
 			// 刷新用户信息
 			this.flash(request, response);
 			response.getWriter().println(isok);
-			return;
 		}
 		if (stat.equals("register")) {
 			// 注册处理动作
@@ -128,7 +120,6 @@ public class ActionServlet extends HttpServlet {
 				}
 			} else {
 				response.getWriter().println("用户名已注册");
-				return;
 			}
 		}
 		if (stat.equals("deviceAdd")) {
@@ -146,7 +137,6 @@ public class ActionServlet extends HttpServlet {
 			} else {
 				response.getWriter().print("添加失败");
 			}
-			return;
 		}
 		if (stat.equals("deviceDel")) {
 			// 删除设备
@@ -173,7 +163,6 @@ public class ActionServlet extends HttpServlet {
 			} else {
 				response.getWriter().print("删除失败，请稍后再试");
 			}
-			return;
 		}
 		if (stat.equals("deviceEdit")) {
 			User user = (User) request.getSession().getAttribute("userObj");
@@ -199,14 +188,13 @@ public class ActionServlet extends HttpServlet {
 			} else {
 				response.getWriter().print("更改失败");
 			}
-			return;
 		}
 		if (stat.equals("warningCheck")) {
 			int wid = Integer.valueOf(request.getParameter("wid"));
 			int type = Integer.valueOf(request.getParameter("type"));
 			GasSensorDao gasSensorDao = new GasSensorDaoImpl();
 			BodySensorInfoDao bodySensorInfoDao = new BodySensorInfoDaoImpl();
-			int tag = 0 ;
+			int tag = 0;
 			switch (type) {
 			case 4:
 				tag = gasSensorDao.updateGasSensorIsCheckByGid(wid);
@@ -218,70 +206,32 @@ public class ActionServlet extends HttpServlet {
 			default:
 				break;
 			}
-			if(tag>0){
+			if (tag > 0) {
 				response.getWriter().print("确认成功");
-				List<Warning> warningList = WarningInfoSearch.search((User)request.getSession().getAttribute("userObj"));
+				List<Warning> warningList = WarningInfoSearch
+						.search((User) request.getSession().getAttribute("userObj"));
 				request.getSession().setAttribute("warningList", warningList);
-			}else{
+			} else {
 				response.getWriter().print("确认失败");
 			}
-			return;
 		}
-
-		if (stat.equals("gas")) {
-			// 可燃性传感器 页面
-			int deviceId = Integer.valueOf(request.getParameter("deviceId"));
-			GasSensorDao gasSensorDao = new GasSensorDaoImpl();
-			List<GasSensor> gasSensorList = gasSensorDao.findGasSensorByDeviceId(deviceId);
-			request.setAttribute("gasSensorList", gasSensorList);
-			request.getSession().setAttribute("gasDeviceId", deviceId);
-			url = "GasSensorInfo.jsp";
+		if (stat.equals("passwordChange")) {
+			String password = request.getParameter("pwd");
+			User user = (User) request.getSession().getAttribute("userObj");
+			user.setUserPassWord(password);
+			int tag = new UserDaoImpl().updateUser(user);
+			if (tag > 0) {
+				flash(request, response);
+				response.getWriter().print("更改成功");
+			} else {
+				response.getWriter().print("更改失败");
+			}
 		}
-		if (stat.equals("gasCheck")) {
-			// 可燃性传感器确认
-			int gid = Integer.valueOf(request.getParameter("gid"));
-			GasSensorDao gasSensorDao = new GasSensorDaoImpl();
-			gasSensorDao.updateGasSensorIsCheckByGid(gid);
-			int deviceId = (Integer) request.getSession().getAttribute("gasDeviceId");
-			List<GasSensor> gasSensorList = gasSensorDao.findGasSensorByDeviceId(deviceId);
-			request.setAttribute("gasSensorList", gasSensorList);
-			url = "GasSensorInfo.jsp";
+		if (stat.equals("noLogin")) {
+			request.getSession().setAttribute("userObj", null);
+			response.sendRedirect("login.jsp");
 		}
-
-		if (stat.equals("bodySensorOnOff")) {
-			// 人体传感器开关设置
-			String isoff = request.getParameter("isoff");
-			int deviceId = Integer.valueOf(request.getParameter("deviceId"));
-			DeviceDao deviceDao = new DeviceDaoImpl();
-			deviceDao.statChange(isoff, deviceId);
-			this.flash(request, response);
-			url = "Index.jsp";
-		}
-
-		if (stat.equals("bodySensorInfo")) {
-			// 人体传感器页面
-			int deviceId = Integer.valueOf(request.getParameter("deviceId"));
-			BodySensorInfoDao bodySensorInfoDao = new BodySensorInfoDaoImpl();
-			List<BodySensorInfo> bodySensorInfoList = null;
-			bodySensorInfoList = bodySensorInfoDao.findAllBodySensorInfoByDeviceId(deviceId);
-			request.setAttribute("bodySensorInfoList", bodySensorInfoList);
-			request.getSession().setAttribute("bodySensorDeviceId", deviceId);
-			url = "BodySensorInfo.jsp";
-		}
-
-		if (stat.equals("bodySensorCheck")) {
-			// 人体传感器确认
-			int deviceId = (int) request.getSession().getAttribute("bodySensorDeviceId");
-			int bid = Integer.valueOf(request.getParameter("bid"));
-			BodySensorInfoDao bodySensorInfoDao = new BodySensorInfoDaoImpl();
-			bodySensorInfoDao.updateBodySensorInfoCheckBybid(bid);
-			List<BodySensorInfo> bodySensorInfoList = null;
-			bodySensorInfoList = bodySensorInfoDao.findAllBodySensorInfoByDeviceId(deviceId);
-			request.setAttribute("bodySensorInfoList", bodySensorInfoList);
-			url = "BodySensorInfo.jsp";
-		}
-
-		request.getRequestDispatcher(url).forward(request, response);
+		return;
 	}
 
 	/**

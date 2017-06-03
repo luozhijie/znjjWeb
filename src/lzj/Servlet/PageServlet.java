@@ -71,7 +71,10 @@ public class PageServlet extends HttpServlet {
 		if (stat.equals("warningCheck")) {
 			url = "warningCheck.jsp";
 		}
-		
+		if (stat.equals("myCenter")) {
+			url = "myCenter.jsp";
+		}
+
 		UserTools.flashUser(request);
 		request.getRequestDispatcher(url).forward(request, response);
 	}

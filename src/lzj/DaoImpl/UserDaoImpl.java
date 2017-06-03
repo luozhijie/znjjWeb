@@ -33,9 +33,9 @@ public class UserDaoImpl extends BaseDao implements UserDao {
 
 	@Override
 	public int updateUser(User user) {
-		String sql = "UPDATE `znjj`.`user_list` SET `user_name`=?, `user_password`=?, `user_type`=? WHERE `user_id`=?;";
+		String sql = "UPDATE `znjj`.`user_list` SET `user_name`=?, `user_password`=?, `user_type`=?, `user_icon`=? WHERE `user_id`=?;";
 		return this.exceuteUpdate(sql, new Object[] { user.getUserName(), user.getUserPassWord(),
-				user.getUserType().getUserTypeId(), user.getUserId() });
+				user.getUserType().getUserTypeId(), user.getIconName(), user.getUserId() });
 	}
 
 	@Override
@@ -59,7 +59,7 @@ public class UserDaoImpl extends BaseDao implements UserDao {
 			}
 			user = new User();
 			user.setDeviceList(deviceDao.findDeviceByUserId(rs.getInt("user_id")));
-			user.setIconName(rs.getString("user_icon") == null ? "default.jpg" : rs.getString("user_icon"));
+			user.setIconName(rs.getString("user_icon") == null ? "8e5581a46667ee373c0a3ecc9ecbe8bb.jpg" : rs.getString("user_icon"));
 			user.setTeleControlMap(teleControlMap);
 			user.setUserId(rs.getInt("user_id"));
 			user.setUserName(rs.getString("user_name"));
@@ -94,7 +94,7 @@ public class UserDaoImpl extends BaseDao implements UserDao {
 				}
 				User user = new User();
 				user.setDeviceList(deviceDao.findDeviceByUserId(rs.getInt("user_id")));
-				user.setIconName(rs.getString("user_icon") == null ? "default.jpg" : rs.getString("user_icon"));
+				user.setIconName(rs.getString("user_icon") == null ? "8e5581a46667ee373c0a3ecc9ecbe8bb.jpg" : rs.getString("user_icon"));
 				user.setTeleControlMap(teleControlMap);
 				user.setUserId(rs.getInt("user_id"));
 				user.setUserName(rs.getString("user_name"));
@@ -137,7 +137,7 @@ public class UserDaoImpl extends BaseDao implements UserDao {
 				}
 				user = new User();
 				user.setDeviceList(deviceDao.findDeviceByUserId(rs.getInt("user_id")));
-				user.setIconName(rs.getString("user_icon") == null ? "default.jpg" : rs.getString("user_icon"));
+				user.setIconName(rs.getString("user_icon") == null ? "8e5581a46667ee373c0a3ecc9ecbe8bb.jpg" : rs.getString("user_icon"));
 				user.setTeleControlMap(teleControlMap);
 				user.setUserId(rs.getInt("user_id"));
 				user.setUserName(rs.getString("user_name"));
@@ -174,7 +174,7 @@ public class UserDaoImpl extends BaseDao implements UserDao {
 				}
 				user = new User();
 				user.setDeviceList(deviceDao.findDeviceByUserId(rs.getInt("user_id")));
-				user.setIconName(rs.getString("user_icon") == null ? "default.jpg" : rs.getString("user_icon"));
+				user.setIconName(rs.getString("user_icon") == null ? "8e5581a46667ee373c0a3ecc9ecbe8bb.jpg" : rs.getString("user_icon"));
 				user.setTeleControlMap(teleControlMap);
 				user.setUserId(rs.getInt("user_id"));
 				user.setUserName(rs.getString("user_name"));
