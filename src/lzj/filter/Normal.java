@@ -11,14 +11,12 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import lzj.entity.User;
-import lzj.tools.UserTools;
 
 /**
  * Servlet Filter implementation class Normal
  */
-@WebFilter(filterName = "/Normal",urlPatterns = "/*")
+@WebFilter(filterName = "/Normal", urlPatterns = "/*")
 public class Normal extends HttpFilter implements Filter {
 
 	/**
@@ -44,9 +42,9 @@ public class Normal extends HttpFilter implements Filter {
 	 */
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
-		request.setCharacterEncoding("UTF-8");
-		response.setCharacterEncoding("UTF-8");
-		response.setContentType("text/html;charset=UTF-8");
+		((HttpServletRequest) request).setCharacterEncoding("UTF-8");
+		((HttpServletResponse) response).setCharacterEncoding("UTF-8");
+		((HttpServletResponse) response).setContentType("text/html;charset=UTF-8");
 		if (((HttpServletRequest) request).getServletPath().indexOf("/login.jsp") > -1) {
 			chain.doFilter(request, response);
 			return;
@@ -59,11 +57,19 @@ public class Normal extends HttpFilter implements Filter {
 			chain.doFilter(request, response);
 			return;
 		}
-
-		if (((User) ((HttpServletRequest) request).getSession().getAttribute("userObj")) == null) {
-			((HttpServletResponse) response).sendRedirect("login.jsp");
+		if (((HttpServletRequest) request).getServletPath().indexOf("/css") > -1) {
+			chain.doFilter(request, response);
+			return;
 		}
-		chain.doFilter(request, response);
+		if (((HttpServletRequest) request).getServletPath().indexOf("/js") > -1) {
+			chain.doFilter(request, response);
+			return;
+		}
+		if ((((HttpServletRequest) request).getSession().getAttribute("userObj")) == null) {
+			((HttpServletRequest) request).getRequestDispatcher("login.jsp").forward(request, response);
+		} else {
+			chain.doFilter(request, response);
+		}
 	}
 
 	/**

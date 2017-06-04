@@ -9,10 +9,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lzj.DAO.DeviceDao;
+import lzj.DAO.PlanDao;
 import lzj.DaoImpl.DeviceDaoImpl;
 import lzj.DaoImpl.DeviceTypeDaoImpl;
+import lzj.DaoImpl.PlanDaoImpl;
 import lzj.entity.Device;
 import lzj.entity.DeviceType;
+import lzj.entity.Plan;
 import lzj.entity.User;
 import lzj.entity.Warning;
 import lzj.tools.UserTools;
@@ -69,10 +72,39 @@ public class PageServlet extends HttpServlet {
 			url = "deviceEdit.jsp";
 		}
 		if (stat.equals("warningCheck")) {
+			// 警告确认界面
 			url = "warningCheck.jsp";
 		}
 		if (stat.equals("myCenter")) {
+			// 个人中心界面
 			url = "myCenter.jsp";
+		}
+		if (stat.equals("planAdd")) {
+			// 计划添加界面
+			request.setAttribute("deviceList", user.getDeviceList());
+			url = "addPlan.jsp";
+		}
+		if (stat.equals("planDel")) {
+			// 计划删除界面
+			PlanDao planDao = new PlanDaoImpl();
+			List<Integer> deviceIdList = new ArrayList<>();
+			for (Device deivce : user.getDeviceList()) {
+				deviceIdList.add(deivce.getDeviceId());
+			}
+			List<Plan> planList = planDao.findPlanByDeviceIdList(deviceIdList);
+			request.setAttribute("planList", planList);
+			url = "planDel.jsp";
+		}
+		if(stat.equals("planEdit")){
+			// 计划任务修改
+			PlanDao planDao = new PlanDaoImpl();
+			List<Integer> deviceIdList = new ArrayList<>();
+			for (Device deivce : user.getDeviceList()) {
+				deviceIdList.add(deivce.getDeviceId());
+			}
+			List<Plan> planList = planDao.findPlanByDeviceIdList(deviceIdList);
+			request.setAttribute("planList", planList);
+			url = "planEdit.jsp";
 		}
 
 		UserTools.flashUser(request);

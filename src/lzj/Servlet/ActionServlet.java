@@ -20,12 +20,14 @@ import lzj.DaoImpl.BodySensorInfoDaoImpl;
 import lzj.DaoImpl.DeviceDaoImpl;
 import lzj.DaoImpl.DeviceTypeDaoImpl;
 import lzj.DaoImpl.GasSensorDaoImpl;
+import lzj.DaoImpl.PlanDaoImpl;
 import lzj.DaoImpl.TempDaoImpl;
 import lzj.DaoImpl.UserDaoImpl;
 import lzj.entity.BodySensorInfo;
 import lzj.entity.Device;
 import lzj.entity.DeviceType;
 import lzj.entity.GasSensor;
+import lzj.entity.Plan;
 import lzj.entity.Temp;
 import lzj.entity.User;
 import lzj.entity.UserType;
@@ -62,7 +64,7 @@ public class ActionServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String url = "";
-		response.setContentType("text/html; charset=utf-8");
+		// response.setContentType("text/html; charset=utf-8");
 		String stat = request.getParameter("stat");
 		System.out.println(stat);
 		if (stat.equals("login")) {
@@ -70,15 +72,12 @@ public class ActionServlet extends HttpServlet {
 			String username = request.getParameter("username");
 			String password = request.getParameter("password");
 			User user = userDao.findUserByUserNameAndPassWord(username, password);
-			response.getWriter().flush();
 			if (user != null) {
-				// url = "Index.jsp";
 				request.getSession().setAttribute("userObj", user);
 				List<Warning> warningList = WarningInfoSearch.search(user);
 				request.getSession().setAttribute("warningList", warningList);
 				response.getWriter().write("OK");
 			} else {
-				// url = "login.jsp";
 				response.getWriter().write("用户名或密码不正确");
 			}
 		}
@@ -165,6 +164,7 @@ public class ActionServlet extends HttpServlet {
 			}
 		}
 		if (stat.equals("deviceEdit")) {
+			// 设备修改
 			User user = (User) request.getSession().getAttribute("userObj");
 			String deviceName = request.getParameter("deviceName");
 			System.out.println(deviceName);
@@ -190,6 +190,7 @@ public class ActionServlet extends HttpServlet {
 			}
 		}
 		if (stat.equals("warningCheck")) {
+			// 确认警告
 			int wid = Integer.valueOf(request.getParameter("wid"));
 			int type = Integer.valueOf(request.getParameter("type"));
 			GasSensorDao gasSensorDao = new GasSensorDaoImpl();
@@ -216,6 +217,7 @@ public class ActionServlet extends HttpServlet {
 			}
 		}
 		if (stat.equals("passwordChange")) {
+			// 密码修改
 			String password = request.getParameter("pwd");
 			User user = (User) request.getSession().getAttribute("userObj");
 			user.setUserPassWord(password);
@@ -228,9 +230,45 @@ public class ActionServlet extends HttpServlet {
 			}
 		}
 		if (stat.equals("noLogin")) {
+			// 注销登录
 			request.getSession().setAttribute("userObj", null);
 			response.sendRedirect("login.jsp");
 		}
+		if (stat.equals("planAdd")) {
+			// 计划任务添加
+			String planName = request.getParameter("planName");
+			int hour = Integer.valueOf(request.getParameter("hour"));
+			int min = Integer.valueOf(request.getParameter("min"));
+			int deviceIdOrProfile = Integer.valueOf(request.getParameter("deviceIdOrProfile").substring(2));
+			int onoff = Integer.valueOf(request.getParameter("onoff"));
+			Plan plan = new Plan(0, planName, hour + ":" + min + ":" + "00", deviceIdOrProfile, onoff, 1);
+			int tag = new PlanDaoImpl().addPlan(plan);
+			if (tag > 0) {
+				response.getWriter().print("添加成功");
+			} else {
+				response.getWriter().print("添加失败");
+			}
+		}
+		if (stat.equals("planDel")) {
+			// 计划任务删除
+			int pid = Integer.valueOf(request.getParameter("pid"));
+			int tag = new PlanDaoImpl().delPlan(new Plan(pid, null, null, 0, 0, 0));
+			if (tag > 0) {
+				response.getWriter().print("删除成功");
+			} else {
+				response.getWriter().print("删除失败");
+			}
+		}
+		if (stat.equals("planEdit")) {
+			// 计划任务修改
+			String planName = request.getParameter("planName");
+			int hour = Integer.valueOf(request.getParameter("hour"));
+			int min = Integer.valueOf(request.getParameter("min"));
+			int deviceIdOrProfile = Integer.valueOf(request.getParameter("deviceIdOrProfile").substring(2));
+			int onoff = Integer.valueOf(request.getParameter("onoff"));
+
+		}
+
 		return;
 	}
 

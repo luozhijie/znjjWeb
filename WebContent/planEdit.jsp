@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>修改设备</title>
+<title>修改计划任务</title>
 <%@ include file="headinclude.html"%>
 </head>
 <body class="cbp-spmenu-push">
@@ -28,101 +28,94 @@
 						<thead>
 							<tr>
 								<th>#</th>
-								<th>设备名称</th>
-								<th>设备类型</th>
-								<th>设备最后在线时间</th>
-								<th>设备GPIO</th>
-								<th>修改</th>
+								<th>任务名称</th>
+								<th>任务执行时间</th>
+								<th>任务执行动作</th>
+								<th>任务状态</th>
+								<th>删除</th>
 							</tr>
 						</thead>
 						<tbody>
-							<c:forEach items="${deviceList }" var="device">
-								<tr id="tr${device.deviceId }">
-									<th scope="row">${device.deviceId }</th>
-									<td id="tdDeviceName${device.deviceId }">${device.deviceName }</td>
-									<td id="tdDeviceType${device.deviceId }">${device.deviceType.deviceTypeName }</td>
-									<td>${device.device_onLine }</td>
-									<td id="tdDeviceGPIO">${device.device_gpio }</td>
+							<c:forEach items="${planList }" var="plan">
+								<tr>
+									<td>${plan.pid }</td>
+									<td>${plan.pName }</td>
+									<td>${plan.pTime }</td>
+									<td>${plan.pStat }</td>
+									<td>${plan.pIsOpen }</td>
 									<td>
-										<!-- 按钮触发模态框 -->
 										<button class="btn btn-primary btn-sm" data-toggle="modal"
-											data-target="#edit${device.deviceId }">编辑</button>
+											data-target="#edit${plan.pid }">修改</button>
 									</td>
 								</tr>
-								<!-- 模态框（Modal） -->
-								<div class="modal fade" id="edit${device.deviceId }"
-									tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-									aria-hidden="true">
+								<!-- 模态框 -->
+								<div class="modal fade" id="edit${plan.pid }" tabindex="-1"
+									role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 									<div class="modal-dialog">
 										<div class="modal-content">
 											<div class="modal-header">
 												<button type="button" class="close" data-dismiss="modal"
 													aria-hidden="true">&times;</button>
-												<h4 class="modal-title">${device.deviceName }</h4>
+												<h4 class="modal-title">${plan.pName }</h4>
 											</div>
 											<div class="modal-body">
-
-
-
-
 												<div class="form-three widget-shadow">
 													<div class="form-horizontal">
 														<div class="form-group">
-															<label for="focusedinput" class="col-sm-2 control-label">设备名称：</label>
+															<label for="focusedinput" class="col-sm-2 control-label">计划名称：</label>
 															<div class="col-sm-8">
-																<input id="deviceName${device.deviceId }" type="text"
-																	class="form-control1" placeholder="请输入设备名称（自取名）"
-																	value="${device.deviceName }" />
+																<input id="planName" type="text" class="form-control1"
+																	id="focusedinput" placeholder="请输入计划任务名称（自取名）">
 															</div>
 														</div>
 														<div class="form-group">
-															<label class="col-sm-2 control-label">设备类型</label>
-															<div class="col-sm-8">
-																<select id="deviceType${device.deviceId }" multiple=""
-																	class="form-control1">
-																	<c:forEach items="${deviceTypeList }" var="deviceType">
-																		<c:if
-																			test="${deviceType.deviceTypeId==device.deviceType.deviceTypeId }">
-																			<option selected="selected"
-																				value="${deviceType.deviceTypeId }">${deviceType.deviceTypeName }</option>
-																		</c:if>
-																		<c:if
-																			test="${deviceType.deviceTypeId!=device.deviceType.deviceTypeId }">
-																			<option value="${deviceType.deviceTypeId }">${deviceType.deviceTypeName }</option>
-																		</c:if>
+															<label class="col-sm-2 control-label">计划任务执行时间</label>
+															<div class="col-sm-2">
+																<select id="hour" multiple="" class="form-control1">
+																	<c:forEach begin="0" end="23" var="hour">
+																		<option value="${hour }">${hour }</option>
+																	</c:forEach>
+																</select>
+															</div>
+															<div class="col-sm-2">
+																<select id="min" multiple="" class="form-control1">
+																	<c:forEach begin="0" end="59" var="min">
+																		<option value="${min }">${min }</option>
 																	</c:forEach>
 																</select>
 															</div>
 														</div>
 														<div class="form-group">
-															<label class="col-sm-2 control-label">GPIO</label>
+															<label class="col-sm-2 control-label">计划任务对应设备/情景模式</label>
 															<div class="col-sm-8">
-																<select id="gpio${device.deviceId }" multiple=""
+																<select id="deviceIdOrProfile" multiple=""
 																	class="form-control1">
-																	<option selected="selected"
-																		value="${device.device_gpio }">${device.device_gpio }</option>
-																	<c:forEach items="${gpioLessList }" var="gpioLess">
-																		<option value="${gpioLess }">${gpioLess }</option>
+																	<c:forEach items="${deviceList }" var="device">
+																		<option value="1,${device.deviceId }">${device.deviceName }</option>
 																	</c:forEach>
+																</select>
+															</div>
+														</div>
+														<div class="form-group">
+															<label class="col-sm-2 control-label">计划任务对应设备/情景模式</label>
+															<div class="col-sm-8">
+																<select id="onoff" multiple="" class="form-control1">
+																	<option value="1">开</option>
+																	<option value="0">关</option>
 																</select>
 															</div>
 														</div>
 													</div>
 												</div>
-
-
-
-
-
 											</div>
 											<div class="modal-footer">
 												<button id="close" type="button" class="btn btn-default"
 													data-dismiss="modal">关闭</button>
-												<button id="editbutton${device.deviceId }" type="button"
+												<button id="editbutton${plan.pid }" type="button"
 													class="btn btn-primary">提交更改</button>
 											</div>
 											<script>
-												$("#editbutton${device.deviceId }").click(
+												$("#editbutton${plan.pid }").click(
 												function() {
 													$.get("ActionServlet?stat=deviceEdit&deviceName="+$("#deviceName${device.deviceId }").val()+"&deviceType="+$("#deviceType${device.deviceId }").val()+"&gpio="+$("#gpio${device.deviceId }").val()+"&did="+${device.deviceId },function(data,status){
 														if(data == "更改成功"){
@@ -133,14 +126,13 @@
 														}else{
 															alert(data);
 														}
-												});
+													});
 											</script>
 										</div>
 										<!-- /.modal-content -->
 									</div>
 									<!-- /.modal -->
 								</div>
-
 							</c:forEach>
 						</tbody>
 					</table>

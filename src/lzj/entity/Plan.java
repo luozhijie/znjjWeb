@@ -6,18 +6,20 @@ public class Plan {
 	private String pTime;
 	private int pDeviceId;
 	private int pStat;
+	private int pIsOpen;
 
 	public Plan() {
 		super();
 	}
 
-	public Plan(int pid, String pName, String pTime, int pDeviceId, int pStat) {
+	public Plan(int pid, String pName, String pTime, int pDeviceId, int pStat, int pIsOpen) {
 		super();
 		this.pid = pid;
 		this.pName = pName;
 		this.pTime = pTime;
 		this.pDeviceId = pDeviceId;
 		this.pStat = pStat;
+		this.pIsOpen = pIsOpen;
 	}
 
 	public int getPid() {
@@ -60,10 +62,19 @@ public class Plan {
 		this.pStat = pStat;
 	}
 
+	public int getpIsOpen() {
+		return pIsOpen;
+	}
+
+	public void setpIsOpen(int pIsOpen) {
+		this.pIsOpen = pIsOpen;
+	}
+
 	@Override
 	public String toString() {
 		return "Plan [pid=" + pid + ", pName=" + pName + ", pTime=" + pTime + ", pDeviceId=" + pDeviceId + ", pStat="
-				+ pStat + "]";
+				+ pStat + ", pIsOpen=" + pIsOpen + "]";
 	}
 
+	
 }
