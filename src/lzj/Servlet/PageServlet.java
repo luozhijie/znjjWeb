@@ -119,7 +119,10 @@ public class PageServlet extends HttpServlet {
 			url = "planOnOff.jsp";
 			
 		}
-
+		if(stat.equals("setting")){
+			
+			url="setting.jsp";
+		}
 		UserTools.flashUser(request);
 		request.getRequestDispatcher(url).forward(request, response);
 	}

@@ -40,6 +40,7 @@ public class SendInfoServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String stat = request.getParameter("stat");
+		
 		if (stat.equals("temp")) {
 			// 温度湿度传感器上传数据
 			int deviceId = Integer.valueOf(request.getParameter("deviceId"));

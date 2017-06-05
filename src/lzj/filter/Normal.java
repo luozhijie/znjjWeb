@@ -64,6 +64,14 @@ public class Normal extends HttpFilter implements Filter {
 			chain.doFilter(request, response);
 			return;
 		}
+		if (((HttpServletRequest) request).getServletPath().indexOf("/ListenService") > -1) {
+			chain.doFilter(request, response);
+			return;
+		}
+		if (((HttpServletRequest) request).getServletPath().indexOf("/SendInfoServlet") > -1) {
+			chain.doFilter(request, response);
+			return;
+		}
 		if ((((HttpServletRequest) request).getSession().getAttribute("userObj")) == null) {
 			((HttpServletRequest) request).getRequestDispatcher("login.jsp").forward(request, response);
 		} else {

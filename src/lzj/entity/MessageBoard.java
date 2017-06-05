@@ -5,17 +5,20 @@ public class MessageBoard {
 	private String content;
 	private int uid;
 	private String date;
+	private int isRead;
 
 	public MessageBoard() {
 		super();
+		// TODO Auto-generated constructor stub
 	}
 
-	public MessageBoard(int mid, String content, int uid, String date) {
+	public MessageBoard(int mid, String content, int uid, String date, int isRead) {
 		super();
 		this.mid = mid;
 		this.content = content;
 		this.uid = uid;
 		this.date = date;
+		this.isRead = isRead;
 	}
 
 	public int getMid() {
@@ -50,9 +53,18 @@ public class MessageBoard {
 		this.date = date;
 	}
 
+	public int getIsRead() {
+		return isRead;
+	}
+
+	public void setIsRead(int isRead) {
+		this.isRead = isRead;
+	}
+
 	@Override
 	public String toString() {
-		return "MessageBoard [mid=" + mid + ", content=" + content + ", uid=" + uid + ", date=" + date + "]";
+		return "MessageBoard [mid=" + mid + ", content=" + content + ", uid=" + uid + ", date=" + date + ", isRead="
+				+ isRead + "]";
 	}
 
 }
