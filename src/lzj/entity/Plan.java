@@ -4,7 +4,7 @@ public class Plan {
 	private int pid;
 	private String pName;
 	private String pTime;
-	private int pDeviceId;
+	private String deviceIdOrProfile;
 	private int pStat;
 	private int pIsOpen;
 
@@ -12,12 +12,12 @@ public class Plan {
 		super();
 	}
 
-	public Plan(int pid, String pName, String pTime, int pDeviceId, int pStat, int pIsOpen) {
+	public Plan(int pid, String pName, String pTime, String deviceIdOrProfile, int pStat, int pIsOpen) {
 		super();
 		this.pid = pid;
 		this.pName = pName;
 		this.pTime = pTime;
-		this.pDeviceId = pDeviceId;
+		this.deviceIdOrProfile = deviceIdOrProfile;
 		this.pStat = pStat;
 		this.pIsOpen = pIsOpen;
 	}
@@ -46,12 +46,12 @@ public class Plan {
 		this.pTime = pTime;
 	}
 
-	public int getpDeviceId() {
-		return pDeviceId;
+	public String getDeviceIdOrProfile() {
+		return deviceIdOrProfile;
 	}
 
-	public void setpDeviceId(int pDeviceId) {
-		this.pDeviceId = pDeviceId;
+	public void setDeviceIdOrProfile(String deviceIdOrProfile) {
+		this.deviceIdOrProfile = deviceIdOrProfile;
 	}
 
 	public int getpStat() {
@@ -72,9 +72,10 @@ public class Plan {
 
 	@Override
 	public String toString() {
-		return "Plan [pid=" + pid + ", pName=" + pName + ", pTime=" + pTime + ", pDeviceId=" + pDeviceId + ", pStat="
-				+ pStat + ", pIsOpen=" + pIsOpen + "]";
+		return "Plan [pid=" + pid + ", pName=" + pName + ", pTime=" + pTime + ", deviceIdOrProfile=" + deviceIdOrProfile
+				+ ", pStat=" + pStat + ", pIsOpen=" + pIsOpen + "]";
 	}
 
 	
+
 }

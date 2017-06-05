@@ -41,8 +41,8 @@
 									<td>${plan.pid }</td>
 									<td>${plan.pName }</td>
 									<td>${plan.pTime }</td>
-									<td>${plan.pStat }</td>
-									<td>${plan.pIsOpen }</td>
+									<td>${plan.pStat eq 0 ? "关":"开" }</td>
+									<td>${plan.pIsOpen eq 0 ? "未激活" : "正在监听" }</td>
 									<td>
 										<button class="btn btn-primary btn-sm" data-toggle="modal"
 											data-target="#edit${plan.pid }">修改</button>
@@ -65,7 +65,8 @@
 															<label for="focusedinput" class="col-sm-2 control-label">计划名称：</label>
 															<div class="col-sm-8">
 																<input id="planName" type="text" class="form-control1"
-																	id="focusedinput" placeholder="请输入计划任务名称（自取名）">
+																	id="focusedinput" placeholder="请输入计划任务名称（自取名）"
+																	value="${plan.pName }">
 															</div>
 														</div>
 														<div class="form-group">
@@ -73,14 +74,25 @@
 															<div class="col-sm-2">
 																<select id="hour" multiple="" class="form-control1">
 																	<c:forEach begin="0" end="23" var="hour">
-																		<option value="${hour }">${hour }</option>
+																		<c:if test="${fn:substring(plan.pTime,0,2) == hour }">
+																			<option selected="selected" value="${hour }">${hour }</option>
+																		</c:if>
+																		<c:if test="${fn:substring(plan.pTime,0,2) != hour }">
+																			<option value="${hour }">${hour }</option>
+																		</c:if>
 																	</c:forEach>
 																</select>
 															</div>
 															<div class="col-sm-2">
 																<select id="min" multiple="" class="form-control1">
 																	<c:forEach begin="0" end="59" var="min">
-																		<option value="${min }">${min }</option>
+																		<c:if test="${fn:substring(plan.pTime,3,5) == min }">
+																			<option selected="selected" value="${min }">${min }</option>
+																		</c:if>
+																		<c:if test="${fn:substring(plan.pTime,3,5) != min }">
+																			<option value="${min }">${min }</option>
+																		</c:if>
+
 																	</c:forEach>
 																</select>
 															</div>
@@ -91,7 +103,14 @@
 																<select id="deviceIdOrProfile" multiple=""
 																	class="form-control1">
 																	<c:forEach items="${deviceList }" var="device">
-																		<option value="1,${device.deviceId }">${device.deviceName }</option>
+																		<c:set var="tag">1,${device.deviceId }</c:set>
+																		<c:if test="${tag == plan.deviceIdOrProfile}">
+																			<option selected="selected"
+																				value="1,${device.deviceId }">${device.deviceName }</option>
+																		</c:if>
+																		<c:if test="${tag != plan.deviceIdOrProfile}">
+																			<option value="1,${device.deviceId }">${device.deviceName }</option>
+																		</c:if>
 																	</c:forEach>
 																</select>
 															</div>
@@ -99,9 +118,19 @@
 														<div class="form-group">
 															<label class="col-sm-2 control-label">计划任务对应设备/情景模式</label>
 															<div class="col-sm-8">
-																<select id="onoff" multiple="" class="form-control1">
-																	<option value="1">开</option>
-																	<option value="0">关</option>
+																<select id="pStat" multiple="" class="form-control1">
+																	<c:if test="${plan.pStat == 1 }">
+																		<option selected="selected" value="1">开</option>
+																	</c:if>
+																	<c:if test="${plan.pStat != 1 }">
+																		<option value="1">开</option>
+																	</c:if>
+																	<c:if test="${plan.pStat == 0 }">
+																		<option selected="selected" value="0">关</option>
+																	</c:if>
+																	<c:if test="${plan.pStat != 0 }">
+																		<option value="0">关</option>
+																	</c:if>
 																</select>
 															</div>
 														</div>
@@ -115,18 +144,42 @@
 													class="btn btn-primary">提交更改</button>
 											</div>
 											<script>
-												$("#editbutton${plan.pid }").click(
-												function() {
-													$.get("ActionServlet?stat=deviceEdit&deviceName="+$("#deviceName${device.deviceId }").val()+"&deviceType="+$("#deviceType${device.deviceId }").val()+"&gpio="+$("#gpio${device.deviceId }").val()+"&did="+${device.deviceId },function(data,status){
-														if(data == "更改成功"){
-															//$("#tdDeviceName${device.deviceId }").val($("#deviceName${device.deviceId }").val());
-															//$("#tdDeviceType${device.deviceId }").val($("#deviceType${device.deviceId }").val());
-															//$("#tdDeviceGPIO${device.deviceId }").val($("#gpio${device.deviceId }").val());
-															history.go(0);
-														}else{
-															alert(data);
-														}
-													});
+												$("#editbutton${plan.pid }")
+														.click(
+																function() {
+																	$
+																			.get(
+																					"ActionServlet?stat=planEdit&pid=${plan.pid }&planName="
+																							+ $(
+																									"#planName")
+																									.val()
+																							+ "&hour="
+																							+ $(
+																									"#hour")
+																									.val()
+																							+ "&min="
+																							+ $(
+																									"#min")
+																									.val()
+																							+ "&deviceIdOrProfile="
+																							+ $(
+																									"#deviceIdOrProfile")
+																									.val()
+																							+ "&pStat="
+																							+ $(
+																									"#pStat")
+																									.val(),
+																					function(
+																							data,
+																							status) {
+																						if (data == "修改成功") {
+																							history
+																									.go(0);
+																						} else {
+																							alert(data);
+																						}
+																					});
+																});
 											</script>
 										</div>
 										<!-- /.modal-content -->

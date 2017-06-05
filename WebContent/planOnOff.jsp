@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>删除计划任务</title>
+<title>计划任务开关控制</title>
 <%@ include file="headinclude.html"%>
 </head>
 <body class="cbp-spmenu-push">
@@ -20,6 +20,7 @@
 	<!-- main content start-->
 	<div id="page-wrapper">
 		<div class="main-page">
+
 			<div class="tables">
 				<h3 class="title1">设备删除列表</h3>
 				<div class="panel-body widget-shadow">
@@ -44,31 +45,37 @@
 									<td>${plan.pStat eq 0 ? "关":"开" }</td>
 									<td>${plan.pIsOpen eq 0 ? "未激活" : "正在监听" }</td>
 									<td>
-										<button id="delete${plan.pid }" class="btn btn-danger">删除</button>
+										<div class="switch">
+											<input id="onoff${plan.pid }" type="checkbox"
+												${plan.pIsOpen == 0 ? '' : 'checked' } />
+										</div>
 									</td>
 								</tr>
 								<script>
-									$("#delete${plan.pid }").click(function(){
-										$.get("ActionServlet?stat=planDel&pid=${plan.pid}",function(data,status){
-											if(data == "删除成功"){
-												$("#tr${plan.pid }").hide();
-											}else{
-												alert(data);
-											}
-										});
-									});
+									$("#onoff${plan.pid }").bootstrapSwitch();
+									$("#onoff${plan.pid }").on(
+											'switchChange.bootstrapSwitch',
+											function(e, state) {
+												if (state) {
+													$.get("ActionServlet?stat=planOnOff&tag=1&pid=${plan.pid}", function(data) {
+													});
+												} else {
+													$.get("ActionServlet?stat=planOnOff&tag=0&pid=${plan.pid}", function(data) {
+													});
+												}
+											});
 								</script>
+
 							</c:forEach>
 						</tbody>
 					</table>
 				</div>
 			</div>
-
-
-			<div class="clearfix"></div>
 		</div>
-		<div class="clearfix"></div>
 	</div>
+
+
+
 	<!--footer-->
 	<%@ include file="footinclude.html"%>
 	<!--//footer-->
@@ -77,12 +84,14 @@
 	<script>
 		var menuLeft = document.getElementById('cbp-spmenu-s1'), showLeftPush = document
 				.getElementById('showLeftPush'), body = document.body;
+
 		showLeftPush.onclick = function() {
 			classie.toggle(this, 'active');
 			classie.toggle(body, 'cbp-spmenu-push-toright');
 			classie.toggle(menuLeft, 'cbp-spmenu-open');
 			disableOther('showLeftPush');
 		};
+
 		function disableOther(button) {
 			if (button !== 'showLeftPush') {
 				classie.toggle(showLeftPush, 'disabled');

@@ -13,9 +13,9 @@ public class PlanDaoImpl extends BaseDao implements PlanDao {
 
 	@Override
 	public int addPlan(Plan plan) {
-		String sql = "INSERT INTO `znjj`.`plan` (`p_name`, `p_time`, `p_device_id`, `p_stat`, `p_isopen`) VALUES (?, ?, ?, ?, ?);";
-		return this.exceuteUpdate(sql,
-				new Object[] { plan.getpName(), plan.getpTime(), plan.getpDeviceId(), plan.getpStat(), plan.getpIsOpen() });
+		String sql = "INSERT INTO `znjj`.`plan` (`p_name`, `p_time`, `p_device_id_or_profile`, `p_stat`, `p_isopen`) VALUES (?, ?, ?, ?, ?);";
+		return this.exceuteUpdate(sql, new Object[] { plan.getpName(), plan.getpTime(), plan.getDeviceIdOrProfile(),
+				plan.getpStat(), plan.getpIsOpen() });
 	}
 
 	@Override
@@ -25,20 +25,20 @@ public class PlanDaoImpl extends BaseDao implements PlanDao {
 
 	@Override
 	public int updatePlan(Plan plan) {
-		String sql = "UPDATE `znjj`.`plan` SET `pid`=?, `p_name`=?, `p_time`=?, `p_device_id`=?, `p_stat`=?, `p_isopen`=? WHERE `pid`=?;";
+		String sql = "UPDATE `znjj`.`plan` SET `pid`=?, `p_name`=?, `p_time`=?, `p_device_id_or_profile`=?, `p_stat`=?, `p_isopen`=? WHERE `pid`=?;";
 		return this.exceuteUpdate(sql, new Object[] { plan.getPid(), plan.getpName(), plan.getpTime(),
-				plan.getpDeviceId(), plan.getpStat(), plan.getpIsOpen(), plan.getPid() });
+				plan.getDeviceIdOrProfile(), plan.getpStat(), plan.getpIsOpen(), plan.getPid() });
 	}
 
 	@Override
 	public List<Plan> findPlanByDeviceId(int did) {
 		List<Plan> planList = new ArrayList<>();
-		String sql = "SELECT * FROM znjj.plan where p_device_id = ?;";
+		String sql = "SELECT * FROM znjj.plan where p_device_id_or_profile = ?;";
 		ResultSet rs = this.execeuteQuary(sql, new Object[] { did });
 		try {
 			while (rs.next()) {
 				Plan plan = new Plan(rs.getInt("pid"), rs.getString("p_name"), rs.getString("p_time"),
-						rs.getInt("p_device_id"), rs.getInt("p_stat"), rs.getInt("p_isopen"));
+						rs.getString("p_device_id_or_profile"), rs.getInt("p_stat"), rs.getInt("p_isopen"));
 				planList.add(plan);
 			}
 		} catch (SQLException e) {
@@ -48,30 +48,47 @@ public class PlanDaoImpl extends BaseDao implements PlanDao {
 	}
 
 	@Override
-	public List<Plan> findPlanByDeviceIdList(List<Integer> deviceIdList) {
+	public List<Plan> findPlanByDeviceIdList(List<String> IdList) {
 		List<Plan> planList = new ArrayList<>();
 		StringBuffer sb = new StringBuffer();
 		sb.append("SELECT * FROM znjj.plan where ");
 		boolean tag = true;
-		for (int i = 0; i < deviceIdList.size(); i++) {
+		for (int i = 0; i < IdList.size(); i++) {
 			if (tag) {
-				sb.append("p_device_id = ? ");
+				sb.append("p_device_id_or_profile = ? ");
 				tag = false;
 			} else {
-				sb.append("or p_device_id = ? ");
+				sb.append("or p_device_id_or_profile = ? ");
 			}
 		}
-		ResultSet rs = this.execeuteQuary(sb.toString(), deviceIdList.toArray());
+		ResultSet rs = this.execeuteQuary(sb.toString(), IdList.toArray());
 		try {
 			while (rs.next()) {
 				Plan plan = new Plan(rs.getInt("pid"), rs.getString("p_name"), rs.getString("p_time"),
-						rs.getInt("p_device_id"), rs.getInt("p_stat"), rs.getInt("p_isopen"));
+						rs.getString("p_device_id_or_profile"), rs.getInt("p_stat"), rs.getInt("p_isopen"));
 				planList.add(plan);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return planList;
+	}
+
+	@Override
+	public Plan findPlanByPid(int pid) {
+		String sql = "SELECT * FROM znjj.plan where pid = ?";
+		List<Plan> planList = new ArrayList<>();
+		ResultSet rs = this.execeuteQuary(sql, new Object[] { pid });
+		try {
+			while (rs.next()) {
+				Plan plan = new Plan(rs.getInt("pid"), rs.getString("p_name"), rs.getString("p_time"),
+						rs.getString("p_device_id_or_profile"), rs.getInt("p_stat"), rs.getInt("p_isopen"));
+				planList.add(plan);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return planList.isEmpty() ? null : planList.get(0);
 	}
 
 }

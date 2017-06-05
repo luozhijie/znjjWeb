@@ -14,6 +14,7 @@ import lzj.DAO.BodySensorInfoDao;
 import lzj.DAO.DeviceDao;
 import lzj.DAO.DeviceTypeDao;
 import lzj.DAO.GasSensorDao;
+import lzj.DAO.PlanDao;
 import lzj.DAO.TempDao;
 import lzj.DAO.UserDao;
 import lzj.DaoImpl.BodySensorInfoDaoImpl;
@@ -81,26 +82,6 @@ public class ActionServlet extends HttpServlet {
 				response.getWriter().write("用户名或密码不正确");
 			}
 		}
-		if (stat.equals("onoff")) {
-			// 开关控制
-			int isoff = Integer.valueOf(request.getParameter("isoff"));
-			int deviceId = Integer.valueOf(request.getParameter("deviceId"));
-			System.out.println(isoff + "," + deviceId);
-			DeviceDao deviceDao = new DeviceDaoImpl();
-			int isok = 0;
-			switch (isoff) {
-			case 1:
-				isok = deviceDao.statChange(isoff + "", deviceId);
-				break;
-
-			default:
-				isok = deviceDao.statChange("0", deviceId);
-				break;
-			}
-			// 刷新用户信息
-			this.flash(request, response);
-			response.getWriter().println(isok);
-		}
 		if (stat.equals("register")) {
 			// 注册处理动作
 			String username = request.getParameter("username");
@@ -121,6 +102,31 @@ public class ActionServlet extends HttpServlet {
 				response.getWriter().println("用户名已注册");
 			}
 		}
+		if ((request.getSession().getAttribute("userObj")) == null) {
+			response.getWriter().print("请登录");
+			return;
+		}
+		if (stat.equals("onoff")) {
+			// 开关控制
+			int isoff = Integer.valueOf(request.getParameter("isoff"));
+			int deviceId = Integer.valueOf(request.getParameter("deviceId"));
+			System.out.println(isoff + "," + deviceId);
+			DeviceDao deviceDao = new DeviceDaoImpl();
+			int isok = 0;
+			switch (isoff) {
+			case 1:
+				isok = deviceDao.statChange(isoff + "", deviceId);
+				break;
+
+			default:
+				isok = deviceDao.statChange("0", deviceId);
+				break;
+			}
+			// 刷新用户信息
+			this.flash(request, response);
+			response.getWriter().println(isok);
+		}
+
 		if (stat.equals("deviceAdd")) {
 			// 添加设备
 			User user = (User) request.getSession().getAttribute("userObj");
@@ -239,7 +245,7 @@ public class ActionServlet extends HttpServlet {
 			String planName = request.getParameter("planName");
 			int hour = Integer.valueOf(request.getParameter("hour"));
 			int min = Integer.valueOf(request.getParameter("min"));
-			int deviceIdOrProfile = Integer.valueOf(request.getParameter("deviceIdOrProfile").substring(2));
+			String deviceIdOrProfile = request.getParameter("deviceIdOrProfile");
 			int onoff = Integer.valueOf(request.getParameter("onoff"));
 			Plan plan = new Plan(0, planName, hour + ":" + min + ":" + "00", deviceIdOrProfile, onoff, 1);
 			int tag = new PlanDaoImpl().addPlan(plan);
@@ -252,7 +258,7 @@ public class ActionServlet extends HttpServlet {
 		if (stat.equals("planDel")) {
 			// 计划任务删除
 			int pid = Integer.valueOf(request.getParameter("pid"));
-			int tag = new PlanDaoImpl().delPlan(new Plan(pid, null, null, 0, 0, 0));
+			int tag = new PlanDaoImpl().delPlan(new Plan(pid, null, null, null, 0, 0));
 			if (tag > 0) {
 				response.getWriter().print("删除成功");
 			} else {
@@ -261,12 +267,37 @@ public class ActionServlet extends HttpServlet {
 		}
 		if (stat.equals("planEdit")) {
 			// 计划任务修改
+			PlanDao planDao = new PlanDaoImpl();
+			int pid = Integer.valueOf(request.getParameter("pid"));
+			Plan p = planDao.findPlanByPid(pid);
 			String planName = request.getParameter("planName");
 			int hour = Integer.valueOf(request.getParameter("hour"));
 			int min = Integer.valueOf(request.getParameter("min"));
-			int deviceIdOrProfile = Integer.valueOf(request.getParameter("deviceIdOrProfile").substring(2));
-			int onoff = Integer.valueOf(request.getParameter("onoff"));
-
+			String deviceIdOrProfile = request.getParameter("deviceIdOrProfile");
+			int pStat = Integer.valueOf(request.getParameter("pStat"));
+			p.setpName(planName);
+			p.setDeviceIdOrProfile(deviceIdOrProfile);
+			p.setpStat(pStat);
+			p.setpTime(hour + ":" + min + ":00");
+			int tag = planDao.updatePlan(p);
+			if (tag > 0) {
+				response.getWriter().print("修改成功");
+			} else {
+				response.getWriter().print("修改成功");
+			}
+		}
+		if (stat.equals("planOnOff")) {
+			int tag = Integer.valueOf(request.getParameter("tag"));
+			int pid = Integer.valueOf(request.getParameter("pid"));
+			PlanDao planDao = new PlanDaoImpl();
+			Plan p = planDao.findPlanByPid(pid);
+			p.setpIsOpen(tag);
+			int tag1 = planDao.updatePlan(p);
+			if(tag1 > 0){
+				response.getWriter().print("修改成功");
+			}else{
+				response.getWriter().print("修改失败");
+			}
 		}
 
 		return;

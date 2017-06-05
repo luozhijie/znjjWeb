@@ -87,24 +87,37 @@ public class PageServlet extends HttpServlet {
 		if (stat.equals("planDel")) {
 			// 计划删除界面
 			PlanDao planDao = new PlanDaoImpl();
-			List<Integer> deviceIdList = new ArrayList<>();
+			List<String> idList = new ArrayList<>();
 			for (Device deivce : user.getDeviceList()) {
-				deviceIdList.add(deivce.getDeviceId());
+				idList.add("1," + deivce.getDeviceId());
 			}
-			List<Plan> planList = planDao.findPlanByDeviceIdList(deviceIdList);
+			List<Plan> planList = planDao.findPlanByDeviceIdList(idList);
 			request.setAttribute("planList", planList);
 			url = "planDel.jsp";
 		}
-		if(stat.equals("planEdit")){
+		if (stat.equals("planEdit")) {
 			// 计划任务修改
 			PlanDao planDao = new PlanDaoImpl();
-			List<Integer> deviceIdList = new ArrayList<>();
+			List<String> idList = new ArrayList<>();
 			for (Device deivce : user.getDeviceList()) {
-				deviceIdList.add(deivce.getDeviceId());
+				idList.add("1," + deivce.getDeviceId());
 			}
-			List<Plan> planList = planDao.findPlanByDeviceIdList(deviceIdList);
+			List<Plan> planList = planDao.findPlanByDeviceIdList(idList);
 			request.setAttribute("planList", planList);
+			request.setAttribute("deviceList", user.getDeviceList());
 			url = "planEdit.jsp";
+		}
+		if(stat.equals("planOnOff")){
+			PlanDao planDao = new PlanDaoImpl();
+			List<String> idList = new ArrayList<>();
+			for (Device deivce : user.getDeviceList()) {
+				idList.add("1," + deivce.getDeviceId());
+			}
+			List<Plan> planList = planDao.findPlanByDeviceIdList(idList);
+			request.setAttribute("planList", planList);
+			request.setAttribute("deviceList", user.getDeviceList());
+			url = "planOnOff.jsp";
+			
 		}
 
 		UserTools.flashUser(request);

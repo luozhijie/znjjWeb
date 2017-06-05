@@ -13,5 +13,7 @@ public interface PlanDao {
 
 	public List<Plan> findPlanByDeviceId(int did);
 
-	public List<Plan> findPlanByDeviceIdList(List<Integer> deviceIdList);
+	public List<Plan> findPlanByDeviceIdList(List<String> deviceIdList);
+	
+	public Plan findPlanByPid(int pid);
 }
