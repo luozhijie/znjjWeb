@@ -1,40 +1,29 @@
 package lzj.Servlet;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.List;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import lzj.DAO.BodySensorInfoDao;
 import lzj.DAO.DeviceDao;
-import lzj.DAO.DeviceTypeDao;
 import lzj.DAO.GasSensorDao;
 import lzj.DAO.PlanDao;
-import lzj.DAO.TempDao;
 import lzj.DAO.UserDao;
 import lzj.DaoImpl.BodySensorInfoDaoImpl;
 import lzj.DaoImpl.DeviceDaoImpl;
-import lzj.DaoImpl.DeviceTypeDaoImpl;
+import lzj.DaoImpl.FamilyGroupDaoImpl;
 import lzj.DaoImpl.GasSensorDaoImpl;
 import lzj.DaoImpl.PlanDaoImpl;
-import lzj.DaoImpl.TempDaoImpl;
 import lzj.DaoImpl.UserDaoImpl;
-import lzj.entity.BodySensorInfo;
 import lzj.entity.Device;
 import lzj.entity.DeviceType;
-import lzj.entity.GasSensor;
 import lzj.entity.Plan;
-import lzj.entity.Temp;
 import lzj.entity.User;
 import lzj.entity.UserType;
 import lzj.entity.Warning;
-import lzj.tools.TempTools;
-import lzj.tools.UserTools;
 import lzj.tools.WarningInfoSearch;
 
 /**
@@ -65,18 +54,21 @@ public class ActionServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String url = "";
-		// response.setContentType("text/html; charset=utf-8");
 		String stat = request.getParameter("stat");
-		System.out.println(stat);
 		if (stat.equals("login")) {
 			// 登录处理动作
 			String username = request.getParameter("username");
 			String password = request.getParameter("password");
 			User user = userDao.findUserByUserNameAndPassWord(username, password);
 			if (user != null) {
-				request.getSession().setAttribute("userObj", user);
+				List<Integer> mainUserId = new FamilyGroupDaoImpl().findMainUserIdByUid(user.getUserId());
+				DeviceDao deviceDao = new DeviceDaoImpl();
+				for (Integer uid : mainUserId) {
+					user.getDeviceList().addAll(deviceDao.findDeviceByUserId(uid));
+				}
 				List<Warning> warningList = WarningInfoSearch.search(user);
 				request.getSession().setAttribute("warningList", warningList);
+				request.getSession().setAttribute("userObj", user);
 				response.getWriter().write("OK");
 			} else {
 				response.getWriter().write("用户名或密码不正确");
@@ -123,7 +115,7 @@ public class ActionServlet extends HttpServlet {
 				break;
 			}
 			// 刷新用户信息
-			this.flash(request, response);
+			// this.flash(request, response);
 			response.getWriter().println(isok);
 		}
 
@@ -138,7 +130,7 @@ public class ActionServlet extends HttpServlet {
 					new Device(0, user.getUserId(), deviceName, null, new DeviceType(deviceType, null), null, GPIO));
 			if (i > 0) {
 				response.getWriter().print("添加成功");
-				flash(request, response);
+				// flash(request, response);
 			} else {
 				response.getWriter().print("添加失败");
 			}
@@ -164,7 +156,7 @@ public class ActionServlet extends HttpServlet {
 			int tag2 = deviceDao.delDeviceById(did);
 			if (tag2 > 0) {
 				response.getWriter().print("删除成功");
-				flash(request, response);
+				// flash(request, response);
 			} else {
 				response.getWriter().print("删除失败，请稍后再试");
 			}
@@ -190,7 +182,7 @@ public class ActionServlet extends HttpServlet {
 			int i = deviceDao.updateDevice(device);
 			if (i > 0) {
 				response.getWriter().print("更改成功");
-				flash(request, response);
+				// flash(request, response);
 			} else {
 				response.getWriter().print("更改失败");
 			}
@@ -229,7 +221,7 @@ public class ActionServlet extends HttpServlet {
 			user.setUserPassWord(password);
 			int tag = new UserDaoImpl().updateUser(user);
 			if (tag > 0) {
-				flash(request, response);
+				// flash(request, response);
 				response.getWriter().print("更改成功");
 			} else {
 				response.getWriter().print("更改失败");
@@ -275,6 +267,7 @@ public class ActionServlet extends HttpServlet {
 			int min = Integer.valueOf(request.getParameter("min"));
 			String deviceIdOrProfile = request.getParameter("deviceIdOrProfile");
 			int pStat = Integer.valueOf(request.getParameter("pStat"));
+			System.out.println(pid + "," + hour + "," + min + "," + deviceIdOrProfile + "," + pStat);
 			p.setpName(planName);
 			p.setDeviceIdOrProfile(deviceIdOrProfile);
 			p.setpStat(pStat);
@@ -293,9 +286,9 @@ public class ActionServlet extends HttpServlet {
 			Plan p = planDao.findPlanByPid(pid);
 			p.setpIsOpen(tag);
 			int tag1 = planDao.updatePlan(p);
-			if(tag1 > 0){
+			if (tag1 > 0) {
 				response.getWriter().print("修改成功");
-			}else{
+			} else {
 				response.getWriter().print("修改失败");
 			}
 		}
@@ -316,10 +309,19 @@ public class ActionServlet extends HttpServlet {
 		// request.getRequestDispatcher(url).forward(request, response);
 	}
 
-	@SuppressWarnings("unused")
-	private void flash(HttpServletRequest request, HttpServletResponse response) {
-		User user = (User) request.getSession().getAttribute("userObj");
-		user = userDao.findUserById(user.getUserId());
-		request.getSession().setAttribute("userObj", user);
-	}
+	// @SuppressWarnings("unused")
+	// private void flash(HttpServletRequest request, HttpServletResponse
+	// response) {
+	// User user = (User) request.getSession().getAttribute("userObj");
+	// user = userDao.findUserById(user.getUserId());
+	// List<Integer> mainUserId = new
+	// FamilyGroupDaoImpl().findMainUserIdByUid(user.getUserId());
+	// DeviceDao deviceDao = new DeviceDaoImpl();
+	// for (Integer uid : mainUserId) {
+	// user.getDeviceList().addAll(deviceDao.findDeviceByUserId(uid));
+	// }
+	// List<Warning> warningList = WarningInfoSearch.search(user);
+	// request.getSession().setAttribute("warningList", warningList);
+	// request.getSession().setAttribute("userObj", user);
+	// }
 }

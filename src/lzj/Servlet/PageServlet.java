@@ -12,9 +12,11 @@ import lzj.DAO.DeviceDao;
 import lzj.DAO.PlanDao;
 import lzj.DaoImpl.DeviceDaoImpl;
 import lzj.DaoImpl.DeviceTypeDaoImpl;
+import lzj.DaoImpl.FamilyGroupDaoImpl;
 import lzj.DaoImpl.PlanDaoImpl;
 import lzj.entity.Device;
 import lzj.entity.DeviceType;
+import lzj.entity.FamilyGroup;
 import lzj.entity.Plan;
 import lzj.entity.User;
 import lzj.entity.Warning;
@@ -45,7 +47,7 @@ public class PageServlet extends HttpServlet {
 		User user = (User) request.getSession().getAttribute("userObj");
 		String url = null;
 		if (stat.equals("onoffControl")) {// 开关控制界面
-			UserTools.flashUser(request);
+//			UserTools.flashUser(request);
 			url = "onOffControl.jsp";
 		}
 		if (stat.equals("deviceAdd")) {// 设备添加界面
@@ -107,7 +109,7 @@ public class PageServlet extends HttpServlet {
 			request.setAttribute("deviceList", user.getDeviceList());
 			url = "planEdit.jsp";
 		}
-		if(stat.equals("planOnOff")){
+		if (stat.equals("planOnOff")) {
 			PlanDao planDao = new PlanDaoImpl();
 			List<String> idList = new ArrayList<>();
 			for (Device deivce : user.getDeviceList()) {
@@ -117,13 +119,14 @@ public class PageServlet extends HttpServlet {
 			request.setAttribute("planList", planList);
 			request.setAttribute("deviceList", user.getDeviceList());
 			url = "planOnOff.jsp";
-			
+
 		}
-		if(stat.equals("setting")){
-			
-			url="setting.jsp";
+		if (stat.equals("setting")) {
+			List<FamilyGroup> familyGroupList = new FamilyGroupDaoImpl().findFamilyGroupByUid(user.getUserId());
+			request.setAttribute("familyGroupList", familyGroupList);
+			url = "setting.jsp";
 		}
-		UserTools.flashUser(request);
+//		UserTools.flashUser(request);
 		request.getRequestDispatcher(url).forward(request, response);
 	}
 

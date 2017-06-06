@@ -9,7 +9,6 @@ public class MessageBoard {
 
 	public MessageBoard() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public MessageBoard(int mid, String content, int uid, String date, int isRead) {

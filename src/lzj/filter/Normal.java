@@ -12,6 +12,8 @@ import javax.servlet.http.HttpFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import lzj.tools.UserTools;
+
 /**
  * Servlet Filter implementation class Normal
  */
@@ -75,6 +77,7 @@ public class Normal extends HttpFilter implements Filter {
 		if ((((HttpServletRequest) request).getSession().getAttribute("userObj")) == null) {
 			((HttpServletRequest) request).getRequestDispatcher("login.jsp").forward(request, response);
 		} else {
+			UserTools.flashUser((HttpServletRequest) request);
 			chain.doFilter(request, response);
 		}
 	}

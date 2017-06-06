@@ -25,9 +25,9 @@ public class PlanDaoImpl extends BaseDao implements PlanDao {
 
 	@Override
 	public int updatePlan(Plan plan) {
-		String sql = "UPDATE `znjj`.`plan` SET `pid`=?, `p_name`=?, `p_time`=?, `p_device_id_or_profile`=?, `p_stat`=?, `p_isopen`=? WHERE `pid`=?;";
-		return this.exceuteUpdate(sql, new Object[] { plan.getPid(), plan.getpName(), plan.getpTime(),
-				plan.getDeviceIdOrProfile(), plan.getpStat(), plan.getpIsOpen(), plan.getPid() });
+		String sql = "UPDATE `znjj`.`plan` SET `p_name`=?, `p_time`=?, `p_device_id_or_profile`=?, `p_stat`=?, `p_isopen`=? WHERE `pid`=?;";
+		return this.exceuteUpdate(sql, new Object[] { plan.getpName(), plan.getpTime(), plan.getDeviceIdOrProfile(),
+				plan.getpStat(), plan.getpIsOpen(), plan.getPid() });
 	}
 
 	@Override

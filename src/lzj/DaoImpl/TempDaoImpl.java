@@ -48,7 +48,7 @@ public class TempDaoImpl extends BaseDao implements TempDao {
 
 	@Override
 	public List<Temp> findTempByDeviceIdAndLimit(int deviceId, int limit) {
-		String sql = "SELECT * FROM znjj.temp_list where device_id=? order by time desc limit ?;";
+		String sql = "SELECT * FROM znjj.temp_list where device_id=? order by temp_id desc limit ?;";
 		ResultSet rs = this.execeuteQuary(sql, new Object[] { deviceId, limit });
 		List<Temp> tempList = new ArrayList<>();
 		try {

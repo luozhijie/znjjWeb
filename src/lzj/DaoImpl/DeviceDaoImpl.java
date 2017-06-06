@@ -69,7 +69,7 @@ public class DeviceDaoImpl extends BaseDao implements DeviceDao {
 	@Override
 	public List<Integer> gpioLess(int uid) {
 		List<Integer> gpioList = new ArrayList<>();
-		for (int i = 2; i <= 21; i++) {
+		for (int i = 2; i <= 27; i++) {
 			gpioList.add(i);
 		}
 		String sql = "SELECT * FROM znjj.device_list where user_id = ?;";

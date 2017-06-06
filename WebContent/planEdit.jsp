@@ -64,15 +64,16 @@
 														<div class="form-group">
 															<label for="focusedinput" class="col-sm-2 control-label">计划名称：</label>
 															<div class="col-sm-8">
-																<input id="planName" type="text" class="form-control1"
-																	id="focusedinput" placeholder="请输入计划任务名称（自取名）"
-																	value="${plan.pName }">
+																<input id="planName${plan.pid }" type="text"
+																	class="form-control1" id="focusedinput"
+																	placeholder="请输入计划任务名称（自取名）" value="${plan.pName }">
 															</div>
 														</div>
 														<div class="form-group">
 															<label class="col-sm-2 control-label">计划任务执行时间</label>
 															<div class="col-sm-2">
-																<select id="hour" multiple="" class="form-control1">
+																<select id="hour${plan.pid }" multiple=""
+																	class="form-control1">
 																	<c:forEach begin="0" end="23" var="hour">
 																		<c:if test="${fn:substring(plan.pTime,0,2) == hour }">
 																			<option selected="selected" value="${hour }">${hour }</option>
@@ -84,7 +85,8 @@
 																</select>
 															</div>
 															<div class="col-sm-2">
-																<select id="min" multiple="" class="form-control1">
+																<select id="min${plan.pid }" multiple=""
+																	class="form-control1">
 																	<c:forEach begin="0" end="59" var="min">
 																		<c:if test="${fn:substring(plan.pTime,3,5) == min }">
 																			<option selected="selected" value="${min }">${min }</option>
@@ -100,7 +102,7 @@
 														<div class="form-group">
 															<label class="col-sm-2 control-label">计划任务对应设备/情景模式</label>
 															<div class="col-sm-8">
-																<select id="deviceIdOrProfile" multiple=""
+																<select id="deviceIdOrProfile${plan.pid }" multiple=""
 																	class="form-control1">
 																	<c:forEach items="${deviceList }" var="device">
 																		<c:set var="tag">1,${device.deviceId }</c:set>
@@ -118,7 +120,8 @@
 														<div class="form-group">
 															<label class="col-sm-2 control-label">计划任务对应设备/情景模式</label>
 															<div class="col-sm-8">
-																<select id="pStat" multiple="" class="form-control1">
+																<select id="pStat${plan.pid }" multiple=""
+																	class="form-control1">
 																	<c:if test="${plan.pStat == 1 }">
 																		<option selected="selected" value="1">开</option>
 																	</c:if>
@@ -151,23 +154,23 @@
 																			.get(
 																					"ActionServlet?stat=planEdit&pid=${plan.pid }&planName="
 																							+ $(
-																									"#planName")
+																									"#planName${plan.pid }")
 																									.val()
 																							+ "&hour="
 																							+ $(
-																									"#hour")
+																									"#hour${plan.pid }")
 																									.val()
 																							+ "&min="
 																							+ $(
-																									"#min")
+																									"#min${plan.pid }")
 																									.val()
 																							+ "&deviceIdOrProfile="
 																							+ $(
-																									"#deviceIdOrProfile")
+																									"#deviceIdOrProfile${plan.pid }")
 																									.val()
 																							+ "&pStat="
 																							+ $(
-																									"#pStat")
+																									"#pStat${plan.pid }")
 																									.val(),
 																					function(
 																							data,
