@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lzj.DAO.BodySensorInfoDao;
 import lzj.DAO.DeviceDao;
+import lzj.DAO.FamilyGroupDao;
 import lzj.DAO.GasSensorDao;
 import lzj.DAO.PlanDao;
 import lzj.DAO.UserDao;
@@ -20,6 +21,7 @@ import lzj.DaoImpl.PlanDaoImpl;
 import lzj.DaoImpl.UserDaoImpl;
 import lzj.entity.Device;
 import lzj.entity.DeviceType;
+import lzj.entity.FamilyGroup;
 import lzj.entity.Plan;
 import lzj.entity.User;
 import lzj.entity.UserType;
@@ -292,6 +294,78 @@ public class ActionServlet extends HttpServlet {
 				response.getWriter().print("修改失败");
 			}
 		}
+		if (stat.equals("addFamilyGroup")) {
+			String familyGroupName = request.getParameter("familyGroupName");
+			User user = (User) request.getSession().getAttribute("userObj");
+			int uid2 = Integer.valueOf(request.getParameter("uid2").equals("") ? "-1" : request.getParameter("uid2"));
+			int uid3 = Integer.valueOf(request.getParameter("uid3").equals("") ? "-1" : request.getParameter("uid3"));
+			int uid4 = Integer.valueOf(request.getParameter("uid4").equals("") ? "-1" : request.getParameter("uid4"));
+			int uid5 = Integer.valueOf(request.getParameter("uid5").equals("") ? "-1" : request.getParameter("uid5"));
+			FamilyGroupDao familyGroupDao = new FamilyGroupDaoImpl();
+			FamilyGroup familyGroup = new FamilyGroup();
+			familyGroup.setFimaryName(familyGroupName);
+			familyGroup.setUser1(user);
+			if (uid2 != -1) {
+				familyGroup.setUser2(new User(uid2, null, null, null, null, null, null));
+			}
+			if (uid3 != -1) {
+				familyGroup.setUser3(new User(uid3, null, null, null, null, null, null));
+			}
+			if (uid4 != -1) {
+				familyGroup.setUser4(new User(uid4, null, null, null, null, null, null));
+			}
+			if (uid5 != -1) {
+				familyGroup.setUser5(new User(uid5, null, null, null, null, null, null));
+			}
+			int tag = familyGroupDao.addFamiryGroup(familyGroup);
+			if (tag > 0) {
+				response.getWriter().print("添加成功");
+			} else {
+				response.getWriter().print("添加失败");
+			}
+		}
+		if (stat.equals("editFamilyGroup")) {
+			String familyGroupName = request.getParameter("familyGroupName");
+			User user = (User) request.getSession().getAttribute("userObj");
+			int fid = Integer.valueOf(request.getParameter("fid"));
+			int uid2 = Integer.valueOf(request.getParameter("uid2").equals("") ? "-1" : request.getParameter("uid2"));
+			int uid3 = Integer.valueOf(request.getParameter("uid3").equals("") ? "-1" : request.getParameter("uid3"));
+			int uid4 = Integer.valueOf(request.getParameter("uid4").equals("") ? "-1" : request.getParameter("uid4"));
+			int uid5 = Integer.valueOf(request.getParameter("uid5").equals("") ? "-1" : request.getParameter("uid5"));
+			System.out.println(familyGroupName + "," + uid2 + "," + uid3 + "," + uid4 + "," + uid5);
+			FamilyGroupDao familyGroupDao = new FamilyGroupDaoImpl();
+			FamilyGroup familyGroup = new FamilyGroup();
+			familyGroup.setFimaryName(familyGroupName);
+			familyGroup.setUser1(user);
+			familyGroup.setFid(fid);
+			if (uid2 != -1) {
+				familyGroup.setUser2(new User(uid2, null, null, null, null, null, null));
+			}
+			if (uid3 != -1) {
+				familyGroup.setUser3(new User(uid3, null, null, null, null, null, null));
+			}
+			if (uid4 != -1) {
+				familyGroup.setUser4(new User(uid4, null, null, null, null, null, null));
+			}
+			if (uid5 != -1) {
+				familyGroup.setUser5(new User(uid5, null, null, null, null, null, null));
+			}
+			int tag = familyGroupDao.updateFamiryGroup(familyGroup);
+			if (tag > 0) {
+				response.getWriter().print("修改成功");
+			} else {
+				response.getWriter().print("修改失败");
+			}
+		}
+		if (stat.equals("delFamilyGroup")) {
+			int fid = Integer.valueOf(request.getParameter("fid"));
+			int tag = new FamilyGroupDaoImpl().delFamiryGroup(fid);
+			if (tag > 0) {
+				response.getWriter().print("删除成功");
+			} else {
+				response.getWriter().print("删除失败");
+			}
+		}
 
 		return;
 	}
@@ -303,8 +377,6 @@ public class ActionServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		doGet(request, response);
-		String url = "";
-		String stat = request.getParameter("stat");
 
 		// request.getRequestDispatcher(url).forward(request, response);
 	}

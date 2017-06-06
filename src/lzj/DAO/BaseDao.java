@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 
 public class BaseDao {
 	// 驱动程序名
@@ -76,7 +77,11 @@ public class BaseDao {
 			pstmt = conn.prepareStatement(prearedSql);
 			if (param != null) {
 				for (int i = 0; i < param.length; i++) {
-					pstmt.setObject(i + 1, param[i]);// 为预编译sql设置参数
+					if (param[i].equals("NULL")) {
+						pstmt.setNull(i + 1, Types.NULL);// 为预编译sql设置参数
+					} else {
+						pstmt.setObject(i + 1, param[i]);// 为预编译sql设置参数
+					}
 				}
 			}
 			num = pstmt.executeUpdate();

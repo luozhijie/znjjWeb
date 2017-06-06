@@ -6,18 +6,20 @@ public class MessageBoard {
 	private int uid;
 	private String date;
 	private int isRead;
+	private String iconName;
 
 	public MessageBoard() {
 		super();
 	}
 
-	public MessageBoard(int mid, String content, int uid, String date, int isRead) {
+	public MessageBoard(int mid, String content, int uid, String date, int isRead, String iconName) {
 		super();
 		this.mid = mid;
 		this.content = content;
 		this.uid = uid;
 		this.date = date;
 		this.isRead = isRead;
+		this.iconName = iconName;
 	}
 
 	public int getMid() {
@@ -60,10 +62,19 @@ public class MessageBoard {
 		this.isRead = isRead;
 	}
 
+	public String getIconName() {
+		return iconName;
+	}
+
+	public void setIconName(String iconName) {
+		this.iconName = iconName;
+	}
+
 	@Override
 	public String toString() {
 		return "MessageBoard [mid=" + mid + ", content=" + content + ", uid=" + uid + ", date=" + date + ", isRead="
-				+ isRead + "]";
+				+ isRead + ", iconName=" + iconName + "]";
 	}
+
 
 }

@@ -47,7 +47,6 @@ public class PageServlet extends HttpServlet {
 		User user = (User) request.getSession().getAttribute("userObj");
 		String url = null;
 		if (stat.equals("onoffControl")) {// 开关控制界面
-//			UserTools.flashUser(request);
 			url = "onOffControl.jsp";
 		}
 		if (stat.equals("deviceAdd")) {// 设备添加界面
@@ -126,7 +125,9 @@ public class PageServlet extends HttpServlet {
 			request.setAttribute("familyGroupList", familyGroupList);
 			url = "setting.jsp";
 		}
-//		UserTools.flashUser(request);
+		if(stat.equals("messageBoard")){
+			url="messageBorad.jsp";
+		}
 		request.getRequestDispatcher(url).forward(request, response);
 	}
 

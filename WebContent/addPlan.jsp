@@ -59,7 +59,7 @@
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-sm-2 control-label">计划任务对应设备/情景模式</label>
+							<label class="col-sm-2 control-label">动作</label>
 							<div class="col-sm-8">
 								<select id="onoff" multiple="" class="form-control1">
 									<option value="1">开</option>
