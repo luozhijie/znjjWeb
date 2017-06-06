@@ -58,7 +58,8 @@ public class MessageBoradDaoImpl extends BaseDao implements MessageBoardDao {
 		int tag = 0;
 		List<Integer> pList = new ArrayList<>();
 		FamilyGroupDao familyGroupDao = new FamilyGroupDaoImpl();
-		List<FamilyGroup> familyGroupList = familyGroupDao.findFamilyGroupByUid(uid);
+		List<FamilyGroup> familyGroupList = familyGroupDao.findAllFamilyGroupByUid(uid);
+		System.out.println(familyGroupList.toString());
 		List<MessageBoard> massageBoardList = new ArrayList<>();
 		for (FamilyGroup familyGroup : familyGroupList) {
 
@@ -108,6 +109,7 @@ public class MessageBoradDaoImpl extends BaseDao implements MessageBoardDao {
 				tag++;
 			}
 			ResultSet rs = this.execeuteQuary(sb.toString(), pList.toArray());
+			System.out.println(sb.toString());
 			try {
 				while (rs.next()) {
 					MessageBoard messageBoard = new MessageBoard();

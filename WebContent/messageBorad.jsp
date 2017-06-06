@@ -25,91 +25,43 @@
 			<div class="widget-shadow chat-mdl-grid">
 				<h4 class="title3">留言板</h4>
 				<div class="scrollbar scrollbar1">
-				
-				
-				
-				
-				
-				
-					<div class="activity-row activity-row1 activity-right">
-						<div class="col-xs-3 activity-img">
-							<img src="images/1.png" class="img-responsive" alt="">
-						</div>
-						<div class="col-xs-9 activity-img1">
-							<div class="activity-desc-sub">
-								<p>你好</p>
-								<span>10:00 PM</span>
+
+					<c:forEach items="${messageBoardList }" var="messageBoard">
+						<c:if test="${messageBoard.uid != userObj.userId }">
+							<div class="activity-row activity-row1 activity-right">
+								<div class="col-xs-3 activity-img">
+									<img src="user_icon/${messageBoard.iconName }"
+										class="img-responsive" alt="">
+								</div>
+								<div class="col-xs-9 activity-img1">
+									<div class="activity-desc-sub">
+										<p>${messageBoard.content }</p>
+										<span>${messageBoard.date }</span>
+									</div>
+								</div>
+								<div class="clearfix"></div>
 							</div>
-						</div>
-						<div class="clearfix"></div>
-					</div>
-					<div class="activity-row activity-row1 activity-left">
-						<div class="col-xs-9 activity-img2">
-							<div class="activity-desc-sub1">
-								<p>What about our next meeting?</p>
-								<span class="right">9:55 PM</span>
+						</c:if>
+
+						<c:if test="${messageBoard.uid == userObj.userId }">
+							<div class="activity-row activity-row1 activity-left">
+								<div class="col-xs-9 activity-img2">
+									<div class="activity-desc-sub1">
+										<p>${messageBoard.content }</p>
+										<span>${messageBoard.date }</span>
+									</div>
+								</div>
+								<div class="col-xs-3 activity-img">
+									<img src="user_icon/${messageBoard.iconName }"
+										class="img-responsive" alt="">
+								</div>
+								<div class="clearfix"></div>
 							</div>
-						</div>
-						<div class="col-xs-3 activity-img">
-							<img src="images/3.png" class="img-responsive" alt="">
-						</div>
-						<div class="clearfix"></div>
-					</div>
-					<div class="activity-row activity-row1 activity-right">
-						<div class="col-xs-3 activity-img">
-							<img src="images/1.png" class="img-responsive" alt="">
-						</div>
-						<div class="col-xs-9 activity-img1">
-							<div class="activity-desc-sub">
-								<p>Consectetur adipisicing elit. Atque ea mollitia pariatur
-									porro quae se</p>
-								<span>9:52 PM</span>
-							</div>
-						</div>
-						<div class="clearfix"></div>
-					</div>
-					<div class="activity-row activity-row1 activity-left">
-						<div class="col-xs-9 activity-img2">
-							<div class="activity-desc-sub1">
-								<p>Quae sed sequi sint tenetur Atque ea mollitia pariatu</p>
-								<span class="right">8:00 PM</span>
-							</div>
-						</div>
-						<div class="col-xs-3 activity-img">
-							<img src="images/3.png" class="img-responsive" alt="">
-						</div>
-						<div class="clearfix"></div>
-					</div>
-					<div class="activity-row activity-row1 activity-left">
-						<div class="col-xs-9 activity-img2">
-							<div class="activity-desc-sub1">
-								<p>Quae sed sequi sint tenetur Atque ea mollitia pariatu</p>
-								<span class="right">7:00 PM</span>
-							</div>
-						</div>
-						<div class="col-xs-3 activity-img">
-							<img src="images/2.png" class="img-responsive" alt="">
-						</div>
-						<div class="clearfix"></div>
-					</div>
-					<div class="activity-row activity-row1 activity-right">
-						<div class="col-xs-3 activity-img">
-							<img src="images/1.png" class="img-responsive" alt="">
-						</div>
-						<div class="col-xs-9 activity-img1">
-							<div class="activity-desc-sub">
-								<p>Consectetur adipisicing elit. Atque ea mollitia pariatur
-									porro quae se</p>
-								<span>6:52 PM</span>
-							</div>
-						</div>
-						<div class="clearfix"></div>
-					</div>
+						</c:if>
+					</c:forEach>
 				</div>
 				<div class="chat-bottom">
-					<form>
-						<input type="text" placeholder="Reply" required="">
-					</form>
+					<input id="addMessage" type="text" placeholder="留言" required="">
 				</div>
 			</div>
 			<!-- 留言板结束 -->
@@ -136,6 +88,20 @@
 				classie.toggle(showLeftPush, 'disabled');
 			}
 		}
+		$("#addMessage").bind("keydown",function(e){
+			var theEvent = e || window.event;    
+			var code = theEvent.keyCode || theEvent.which || theEvent.charCode;    
+			if (code == 13) {
+				$.get("ActionServlet?stat=addMessage&content="+$("#addMessage").val()+"&uid="+${userObj.userId},function(data,status){
+					if(data == "留言成功"){
+						history.go(0);
+					}else{
+						alert(data);
+					}
+				});
+			}
+		});
+		
 	</script>
 	<!--scrolling js-->
 	<script src="js/jquery.nicescroll.js"></script>

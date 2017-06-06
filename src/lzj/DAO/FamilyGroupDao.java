@@ -16,4 +16,6 @@ public interface FamilyGroupDao {
 	public List<FamilyGroup> findFamilyGroupByUid(int uid);
 	
 	public List<Integer> findMainUserIdByUid(int uid);
+
+	public List<FamilyGroup> findAllFamilyGroupByUid(int uid);
 }

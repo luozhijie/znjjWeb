@@ -110,4 +110,38 @@ public class FamilyGroupDaoImpl extends BaseDao implements FamilyGroupDao {
 		return userIdList;
 	}
 
+	@Override
+	public List<FamilyGroup> findAllFamilyGroupByUid(int uid) {
+		String sql = "SELECT * FROM znjj.family_group where family_person_id1 =? or family_person_id2 =? or family_person_id3 = ? or family_person_id4 = ? or family_person_id5 = ?;";
+		ResultSet rs = this.execeuteQuary(sql, new Object[] { uid, uid, uid, uid, uid });
+		List<FamilyGroup> familyGroupList = new ArrayList<>();
+		UserDao userDao = new UserDaoImpl();
+		try {
+			while (rs.next()) {
+				System.out.println("has");
+				FamilyGroup familyGroup = new FamilyGroup();
+				familyGroup.setFid(rs.getInt("fid"));
+				familyGroup.setFimaryName(rs.getString("family_name"));
+
+				familyGroup.setUser1(userDao.findUserById(rs.getInt("family_person_id1")));
+				if (rs.getInt("family_person_id2") != 0) {
+					familyGroup.setUser2(userDao.findUserById(rs.getInt("family_person_id2")));
+				}
+				if (rs.getInt("family_person_id3") != 0) {
+					familyGroup.setUser3(userDao.findUserById(rs.getInt("family_person_id3")));
+				}
+				if (rs.getInt("family_person_id4") != 0) {
+					familyGroup.setUser4(userDao.findUserById(rs.getInt("family_person_id4")));
+				}
+				if (rs.getInt("family_person_id5") != 0) {
+					familyGroup.setUser5(userDao.findUserById(rs.getInt("family_person_id5")));
+				}
+				familyGroupList.add(familyGroup);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return familyGroupList;
+	}
+
 }

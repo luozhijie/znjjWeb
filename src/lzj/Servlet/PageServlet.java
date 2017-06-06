@@ -9,14 +9,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lzj.DAO.DeviceDao;
+import lzj.DAO.MessageBoardDao;
 import lzj.DAO.PlanDao;
 import lzj.DaoImpl.DeviceDaoImpl;
 import lzj.DaoImpl.DeviceTypeDaoImpl;
 import lzj.DaoImpl.FamilyGroupDaoImpl;
+import lzj.DaoImpl.MessageBoradDaoImpl;
 import lzj.DaoImpl.PlanDaoImpl;
 import lzj.entity.Device;
 import lzj.entity.DeviceType;
 import lzj.entity.FamilyGroup;
+import lzj.entity.MessageBoard;
 import lzj.entity.Plan;
 import lzj.entity.User;
 import lzj.entity.Warning;
@@ -125,9 +128,13 @@ public class PageServlet extends HttpServlet {
 			request.setAttribute("familyGroupList", familyGroupList);
 			url = "setting.jsp";
 		}
-		if(stat.equals("messageBoard")){
-			url="messageBorad.jsp";
+		if (stat.equals("messageBoard")) {
+			MessageBoardDao messageBoardDao = new MessageBoradDaoImpl();
+			List<MessageBoard> messageBoardList = messageBoardDao.findMessageBoardByUid(user.getUserId());
+			request.setAttribute("messageBoardList", messageBoardList);
+			url = "messageBorad.jsp";
 		}
+
 		request.getRequestDispatcher(url).forward(request, response);
 	}
 

@@ -17,11 +17,13 @@ import lzj.DaoImpl.BodySensorInfoDaoImpl;
 import lzj.DaoImpl.DeviceDaoImpl;
 import lzj.DaoImpl.FamilyGroupDaoImpl;
 import lzj.DaoImpl.GasSensorDaoImpl;
+import lzj.DaoImpl.MessageBoradDaoImpl;
 import lzj.DaoImpl.PlanDaoImpl;
 import lzj.DaoImpl.UserDaoImpl;
 import lzj.entity.Device;
 import lzj.entity.DeviceType;
 import lzj.entity.FamilyGroup;
+import lzj.entity.MessageBoard;
 import lzj.entity.Plan;
 import lzj.entity.User;
 import lzj.entity.UserType;
@@ -365,6 +367,20 @@ public class ActionServlet extends HttpServlet {
 			} else {
 				response.getWriter().print("删除失败");
 			}
+		}
+		if (stat.equals("addMessage")) {
+			String content = request.getParameter("content");
+			int uid = Integer.valueOf(request.getParameter("uid"));
+			MessageBoard messageBoard = new MessageBoard();
+			messageBoard.setContent(content);
+			messageBoard.setUid(uid);
+			int tag = new MessageBoradDaoImpl().addMessageBorad(messageBoard);
+			if (tag > 0) {
+				response.getWriter().print("留言成功");
+			} else {
+				response.getWriter().print("留言失败");
+			}
+
 		}
 
 		return;

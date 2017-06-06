@@ -63,7 +63,7 @@ public class MessageBoard {
 	}
 
 	public String getIconName() {
-		return iconName;
+		return iconName == null ? "8e5581a46667ee373c0a3ecc9ecbe8bb.jpg" : iconName;
 	}
 
 	public void setIconName(String iconName) {
@@ -75,6 +75,5 @@ public class MessageBoard {
 		return "MessageBoard [mid=" + mid + ", content=" + content + ", uid=" + uid + ", date=" + date + ", isRead="
 				+ isRead + ", iconName=" + iconName + "]";
 	}
-
 
 }
