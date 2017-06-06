@@ -118,7 +118,6 @@ public class FamilyGroupDaoImpl extends BaseDao implements FamilyGroupDao {
 		UserDao userDao = new UserDaoImpl();
 		try {
 			while (rs.next()) {
-				System.out.println("has");
 				FamilyGroup familyGroup = new FamilyGroup();
 				familyGroup.setFid(rs.getInt("fid"));
 				familyGroup.setFimaryName(rs.getString("family_name"));

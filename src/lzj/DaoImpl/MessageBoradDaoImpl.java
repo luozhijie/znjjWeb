@@ -109,7 +109,6 @@ public class MessageBoradDaoImpl extends BaseDao implements MessageBoardDao {
 				tag++;
 			}
 			ResultSet rs = this.execeuteQuary(sb.toString(), pList.toArray());
-			System.out.println(sb.toString());
 			try {
 				while (rs.next()) {
 					MessageBoard messageBoard = new MessageBoard();

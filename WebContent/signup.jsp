@@ -12,6 +12,7 @@
 		var username = $("#username").val();
 		var pwd = $("#pwd").val();
 		var pwdc = $("#pwdcheck").val();
+		var yanzhengma = $("#yzm").val();
 		if (username == '') {
 			alert("用户名不能为空");
 			return;
@@ -30,9 +31,13 @@
 		}
 		$.post("ActionServlet?stat=register", {
 			username : username,
-			password : pwd
+			password : pwd,
+			yzm : yanzhengma
 		}, function(data) {
 			alert(data);
+			if(data == "请登录"){
+				window.location.href = "login.jsp";
+			}
 		});
 	}
 </script>
@@ -72,8 +77,17 @@
 				</div>
 				<div class="clearfix"></div>
 			</div>
+			<div class="sign-u">
+				<div class="sign-up1">
+					<h4>验证码:</h4><img alt="" src="ActionServlet?stat=getYzm">
+				</div>
+				<div class="sign-up2">
+					<input type="text" id="yzm" name="pwdcheck" required>
+				</div>
+			</div>
 			<div class="sub_home">
-				<input style="display:flex; text-align: center; margin: 0 auto;" onclick="return register();" name="submit" type="submit"
+				<input style="display: flex; text-align: center; margin: 0 auto;"
+					onclick="return register();" name="submit" type="submit"
 					value="               提交">
 				<div class="clearfix"></div>
 			</div>

@@ -1,7 +1,16 @@
 package lzj.Servlet;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.util.List;
+import java.util.Random;
+
+import javax.imageio.ImageIO;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -63,6 +72,12 @@ public class ActionServlet extends HttpServlet {
 			// 登录处理动作
 			String username = request.getParameter("username");
 			String password = request.getParameter("password");
+			String yzm = request.getParameter("yzm");
+			System.out.println(yzm);
+			if (!yzm.equals(request.getSession().getAttribute("rand"))) {
+				response.getWriter().write("验证码输入错误");
+				return;
+			}
 			User user = userDao.findUserByUserNameAndPassWord(username, password);
 			if (user != null) {
 				List<Integer> mainUserId = new FamilyGroupDaoImpl().findMainUserIdByUid(user.getUserId());
@@ -84,12 +99,20 @@ public class ActionServlet extends HttpServlet {
 			String password = request.getParameter("password");
 			User user = userDao.findUserByUserName(username);
 			if (user == null) {
+				String yzm = request.getParameter("yzm");
+				System.out.println(yzm);
+				if (!yzm.equals(request.getSession().getAttribute("rand"))) {
+					response.getWriter().write("验证码输入错误");
+					return;
+				}
+
 				user = new User();
 				user.setUserName(username);
 				user.setUserPassWord(password);
 				user.setUserType(new UserType(2, "用户"));
 				userDao.addUser(user);
 				request.setAttribute("userObj", user);
+
 				if (user != null) {
 					// response.sendRedirect("Index.jsp");
 					url = "Index.jsp";
@@ -97,6 +120,34 @@ public class ActionServlet extends HttpServlet {
 			} else {
 				response.getWriter().println("用户名已注册");
 			}
+		}
+		if (stat.equals("getYzm")) {
+			response.setHeader("Pragma", "No-chache");
+			response.setHeader("Chache", "No-chache");
+			response.setDateHeader("Expires", 0);
+			int width = 80, height = 30;
+			BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+			Graphics g = image.getGraphics();
+			g.setColor(Color.white);
+			g.fillRect(0, 0, width, height);
+			Font[] fonts = { new Font("宋体", Font.PLAIN, 18), new Font("黑体", Font.PLAIN, 18),
+					new Font("幼西", Font.PLAIN, 18), new Font("楷体", Font.PLAIN, 18) };
+			g.setFont(fonts[0]);
+			Random random = new Random();
+			String chs = "23456789abcdefghijkmnpqrstuvwxyz";
+			String sr = "";
+			for (int i = 0; i < 4; ++i) {
+				int idx = random.nextInt(chs.length());
+				String sre = chs.substring(idx, idx + 1);
+				sr += sre;
+				g.setFont(fonts[random.nextInt(fonts.length)]);
+				g.setColor(new Color(20 + random.nextInt(110), 20 + random.nextInt(110), 20 + random.nextInt(110)));
+				g.drawString(sre, 15 * i + 6, 16);
+			}
+			request.getSession().setAttribute("rand", sr);
+			g.dispose();
+			ImageIO.write(image, "JPEG", response.getOutputStream());
+			return;
 		}
 		if ((request.getSession().getAttribute("userObj")) == null) {
 			response.getWriter().print("请登录");
@@ -118,8 +169,6 @@ public class ActionServlet extends HttpServlet {
 				isok = deviceDao.statChange("0", deviceId);
 				break;
 			}
-			// 刷新用户信息
-			// this.flash(request, response);
 			response.getWriter().println(isok);
 		}
 

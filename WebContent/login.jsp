@@ -11,7 +11,8 @@
 	function login() {
 		$.post("ActionServlet?stat=login", {
 			username : $("#username").val(),
-			password : $("#password").val()
+			password : $("#password").val(),
+			yzm : $("#yzm").val()
 		}, function(data) {
 			if (data == "OK") {
 				window.location.href = "Index.jsp";
@@ -36,6 +37,8 @@
 				<input id="username" type="text" class="user" name="email"
 					placeholder="请输入账号" required=""> <input id="password"
 					type="password" name="password" class="lock" placeholder="请输入密码">
+					<input id="yzm" type="text" class="user" name="email"
+					placeholder="请输入验证码" required=""><img alt="" src="ActionServlet?stat=getYzm">
 				<input type="submit" name="Sign In" value="登录"
 					onclick="return login()">
 				<div class="forgot-grid">
