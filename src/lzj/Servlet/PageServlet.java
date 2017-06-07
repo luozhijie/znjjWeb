@@ -135,6 +135,7 @@ public class PageServlet extends HttpServlet {
 		if (stat.equals("messageBoard")) {
 			MessageBoardDao messageBoardDao = new MessageBoradDaoImpl();
 			List<MessageBoard> messageBoardList = messageBoardDao.findMessageBoardByUid(user.getUserId());
+			System.out.println(messageBoardList.toString());
 			request.setAttribute("messageBoardList", messageBoardList);
 			url = "messageBorad.jsp";
 		}

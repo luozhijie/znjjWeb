@@ -25,7 +25,6 @@
 			<div class="widget-shadow chat-mdl-grid">
 				<h4 class="title3">留言板</h4>
 				<div class="scrollbar scrollbar1">
-
 					<c:forEach items="${messageBoardList }" var="messageBoard">
 						<c:if test="${messageBoard.uid != userObj.userId }">
 							<div class="activity-row activity-row1 activity-right">
@@ -36,7 +35,7 @@
 								<div class="col-xs-9 activity-img1">
 									<div class="activity-desc-sub">
 										<p>${messageBoard.content }</p>
-										<span>${messageBoard.date }</span>
+										<span>${messageBoard.userName }</span> <span>${messageBoard.date }</span>
 									</div>
 								</div>
 								<div class="clearfix"></div>
@@ -48,7 +47,7 @@
 								<div class="col-xs-9 activity-img2">
 									<div class="activity-desc-sub1">
 										<p>${messageBoard.content }</p>
-										<span>${messageBoard.date }</span>
+										<span>${messageBoard.userName }</span> <span>${messageBoard.date }</span>
 									</div>
 								</div>
 								<div class="col-xs-3 activity-img">

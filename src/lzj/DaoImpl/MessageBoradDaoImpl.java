@@ -45,6 +45,7 @@ public class MessageBoradDaoImpl extends BaseDao implements MessageBoardDao {
 				messageBoard.setIsRead(rs.getInt("isread"));
 				messageBoard.setMid(rs.getInt("mid"));
 				messageBoard.setUid(rs.getInt("uid"));
+				messageBoard.setUserName(rs.getString("user_name"));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -118,6 +119,7 @@ public class MessageBoradDaoImpl extends BaseDao implements MessageBoardDao {
 					messageBoard.setMid(rs.getInt("mid"));
 					messageBoard.setUid(rs.getInt("uid"));
 					messageBoard.setIconName(rs.getString("user_icon"));
+					messageBoard.setUserName(rs.getString("user_name"));
 					massageBoardList.add(messageBoard);
 				}
 			} catch (SQLException e) {

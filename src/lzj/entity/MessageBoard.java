@@ -7,12 +7,13 @@ public class MessageBoard {
 	private String date;
 	private int isRead;
 	private String iconName;
+	private String userName;
 
 	public MessageBoard() {
 		super();
 	}
 
-	public MessageBoard(int mid, String content, int uid, String date, int isRead, String iconName) {
+	public MessageBoard(int mid, String content, int uid, String date, int isRead, String iconName, String userName) {
 		super();
 		this.mid = mid;
 		this.content = content;
@@ -20,6 +21,7 @@ public class MessageBoard {
 		this.date = date;
 		this.isRead = isRead;
 		this.iconName = iconName;
+		this.userName = userName;
 	}
 
 	public int getMid() {
@@ -63,17 +65,25 @@ public class MessageBoard {
 	}
 
 	public String getIconName() {
-		return iconName == null ? "8e5581a46667ee373c0a3ecc9ecbe8bb.jpg" : iconName;
+		return iconName;
 	}
 
 	public void setIconName(String iconName) {
 		this.iconName = iconName;
 	}
 
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
 	@Override
 	public String toString() {
 		return "MessageBoard [mid=" + mid + ", content=" + content + ", uid=" + uid + ", date=" + date + ", isRead="
-				+ isRead + ", iconName=" + iconName + "]";
+				+ isRead + ", iconName=" + iconName + ", userName=" + userName + "]";
 	}
 
 }
