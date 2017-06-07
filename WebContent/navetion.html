@@ -41,17 +41,14 @@ pageEncoding="UTF-8"%>
 				<li><a href="#"><i class="fa fa-cogs nav_icon"></i>情景模式<span
 						class="nav-badge">12</span> <span class="fa arrow"></span></a>
 					<ul class="nav nav-second-level collapse">
-						<li><a href="#">情景模式添加</a></li>
+						<li><a href="PageServlet?stat=profilesAdd">情景模式添加</a></li>
 						<li><a href="#">情景模式删除</a></li>
 						<li><a href="#">情景模式修改</a></li>
+						<li><a href="PageServlet?stat=profileActive">情景模式激活</a></li>
 					</ul></li>
 				<li><a href="PageServlet?stat=warningCheck"><i
 						class="fa fa-th-large nav_icon"></i>警告处理<span
 						class="nav-badge-btm">${fn:length(warningList) }</span></a></li>
-				<li><a href="#"><i class="fa fa-table nav_icon"></i>设备详细信息
-						<span class="nav-badge">05</span></a></li>
-				<li><a href="#" class="chart-nav"><i
-						class="fa fa-bar-chart nav_icon"></i>图表信息</a></li>
 				<li><a href="PageServlet?stat=messageBoard"><i class="fa fa-file-text-o nav_icon"></i>留言板<span class="nav-badge-btm">02</span></a>
 			</ul>
 			<!-- //sidebar-collapse -->

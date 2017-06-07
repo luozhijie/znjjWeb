@@ -13,6 +13,7 @@ import lzj.DaoImpl.TempDaoImpl;
 import lzj.entity.Device;
 import lzj.entity.Temp;
 import lzj.entity.User;
+import lzj.tools.ProfileTools;
 
 /**
  * Servlet implementation class GetListServlet
@@ -36,9 +37,9 @@ public class GetInfoServlet extends HttpServlet {
 			throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		response.setCharacterEncoding("UTF-8");
-		StringBuffer sb = new StringBuffer();
 		String stat = request.getParameter("stat");
 		if (stat.equals("temp")) {
+			StringBuffer sb = new StringBuffer();
 			User user = (User) request.getSession().getAttribute("userObj");
 			TempDao tempDao = new TempDaoImpl();
 			List<Device> deviceList = user.getDeviceList();
@@ -74,8 +75,21 @@ public class GetInfoServlet extends HttpServlet {
 							+ "').getContext('2d')).Line(lineChartData);" + "</script>'");
 				}
 			}
+			response.getWriter().println(sb);
 		}
-		response.getWriter().println(sb);
+		if (stat.equals("lessProfileDevice")) {
+			int uid = ((User) request.getSession().getAttribute("userObj")).getUserId();
+			int pid = Integer.valueOf(request.getParameter("pid"));
+			ProfileTools profileTools = new ProfileTools();
+			List<Device> deviceLessList = profileTools.findLessDeviceByPid(pid, uid);
+
+			StringBuffer sb = new StringBuffer();
+			for (Device device : deviceLessList) {
+				sb.append("<option value=" + device.getDeviceId() +">" + device.getDeviceName() + "</option>");
+			}
+			response.getWriter().print(sb.toString());
+		}
+
 	}
 
 	/**

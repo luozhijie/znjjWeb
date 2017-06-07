@@ -11,18 +11,22 @@ import javax.servlet.http.HttpServletResponse;
 import lzj.DAO.DeviceDao;
 import lzj.DAO.MessageBoardDao;
 import lzj.DAO.PlanDao;
+import lzj.DAO.ProfileDao;
 import lzj.DaoImpl.DeviceDaoImpl;
 import lzj.DaoImpl.DeviceTypeDaoImpl;
 import lzj.DaoImpl.FamilyGroupDaoImpl;
 import lzj.DaoImpl.MessageBoradDaoImpl;
 import lzj.DaoImpl.PlanDaoImpl;
+import lzj.DaoImpl.ProfileDaoImpl;
 import lzj.entity.Device;
 import lzj.entity.DeviceType;
 import lzj.entity.FamilyGroup;
 import lzj.entity.MessageBoard;
 import lzj.entity.Plan;
+import lzj.entity.Profile;
 import lzj.entity.User;
 import lzj.entity.Warning;
+import lzj.tools.ProfileTools;
 import lzj.tools.UserTools;
 import lzj.tools.WarningInfoSearch;
 
@@ -134,7 +138,18 @@ public class PageServlet extends HttpServlet {
 			request.setAttribute("messageBoardList", messageBoardList);
 			url = "messageBorad.jsp";
 		}
-
+		if (stat.equals("profilesAdd")) {
+			ProfileDao profileDao = new ProfileDaoImpl();
+			List<Profile> profileList = profileDao.findProfileByUid(user.getUserId());
+			request.setAttribute("profileList", profileList);
+			url = "profilesAdd.jsp";
+		}
+		if (stat.equals("profileActive")) {
+			ProfileDao profileDao = new ProfileDaoImpl();
+			List<Profile> profileList = profileDao.findProfileByUid(user.getUserId());
+			request.setAttribute("profileList", profileList);
+			url = "profileActive.jsp";
+		}
 		request.getRequestDispatcher(url).forward(request, response);
 	}
 

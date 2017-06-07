@@ -28,15 +28,20 @@ import lzj.DaoImpl.FamilyGroupDaoImpl;
 import lzj.DaoImpl.GasSensorDaoImpl;
 import lzj.DaoImpl.MessageBoradDaoImpl;
 import lzj.DaoImpl.PlanDaoImpl;
+import lzj.DaoImpl.ProfileActionDaoImpl;
+import lzj.DaoImpl.ProfileDaoImpl;
 import lzj.DaoImpl.UserDaoImpl;
 import lzj.entity.Device;
 import lzj.entity.DeviceType;
 import lzj.entity.FamilyGroup;
 import lzj.entity.MessageBoard;
 import lzj.entity.Plan;
+import lzj.entity.Profile;
+import lzj.entity.ProfileAction;
 import lzj.entity.User;
 import lzj.entity.UserType;
 import lzj.entity.Warning;
+import lzj.tools.ProfileTools;
 import lzj.tools.WarningInfoSearch;
 
 /**
@@ -429,7 +434,37 @@ public class ActionServlet extends HttpServlet {
 			} else {
 				response.getWriter().print("留言失败");
 			}
-
+		}
+		if (stat.equals("activeProfile")) {
+			int pid = Integer.valueOf(request.getParameter("pid"));
+			ProfileTools profileTools = new ProfileTools();
+			int tag = profileTools.activeProfileByPid(pid);
+			if (tag > 0) {
+				response.getWriter().print("激活成功");
+			} else {
+				response.getWriter().print("无可用动作");
+			}
+		}
+		if (stat.equals("addProfileAction")) {
+			ProfileAction profileAction = new ProfileAction();
+			profileAction.setPid(Integer.valueOf(request.getParameter("pid")));
+			profileAction.setaDeviceId(Integer.valueOf(request.getParameter("did")));
+			int tag = new ProfileActionDaoImpl().addProfileAction(profileAction);
+			if (tag > 0) {
+				response.getWriter().print("添加成功");
+			} else {
+				response.getWriter().print("添加失败");
+			}
+		}
+		if (stat.equals("addProfile")) {
+			String pname = request.getParameter("pname");
+			int uid = ((User) request.getSession().getAttribute("userObj")).getUserId();
+			int tag = new ProfileDaoImpl().addProfile(new Profile(0, pname, uid, null));
+			if (tag > 0) {
+				response.getWriter().print("添加成功");
+			} else {
+				response.getWriter().println("添加失败");
+			}
 		}
 
 		return;
