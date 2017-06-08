@@ -30,7 +30,7 @@
 							<div class="activity-row activity-row1 activity-right">
 								<div class="col-xs-3 activity-img">
 									<img src="user_icon/${messageBoard.iconName }"
-										class="img-responsive" alt="">
+										class="img-responsive img-circle" alt="" width="100px" height="100px">
 								</div>
 								<div class="col-xs-9 activity-img1">
 									<div class="activity-desc-sub">
@@ -51,8 +51,8 @@
 									</div>
 								</div>
 								<div class="col-xs-3 activity-img">
-									<img src="user_icon/${messageBoard.iconName }"
-										class="img-responsive" alt="">
+									<img  width="100px" height="100px" src="user_icon/${messageBoard.iconName }"
+										class="img-responsive img-circle" alt="">
 								</div>
 								<div class="clearfix"></div>
 							</div>

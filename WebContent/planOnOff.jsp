@@ -22,9 +22,9 @@
 		<div class="main-page">
 
 			<div class="tables">
-				<h3 class="title1">设备删除列表</h3>
+				<h3 class="title1">计划任务开关控制</h3>
 				<div class="panel-body widget-shadow">
-					<h4>设备删除列表：</h4>
+					<h4>计划任务开关控制：</h4>
 					<table class="table">
 						<thead>
 							<tr>

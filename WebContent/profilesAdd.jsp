@@ -120,7 +120,7 @@
 							});
 							
 							$("#addProfileButton${profile.pid }").click(function(){
-								$.get("ActionServlet?stat=addProfileAction&pid=${profile.pid }&did="+$("#lessDeviceChoose${profile.pid }").val(),function(data){
+								$.get("ActionServlet?stat=addProfileAction&pid=${profile.pid }&did="+$("#lessDeviceChoose${profile.pid }").val()+"&aid="+$("#onoffaction${profile.pid }").val(),function(data, status){
 									if(data == "添加成功"){
 										history.go(0);
 									}else{

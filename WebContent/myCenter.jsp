@@ -127,12 +127,14 @@
 							</div>
 							<div id="collapseThree" class="panel-collapse collapse"
 								role="tabpanel" aria-labelledby="headingThree">
-								<div class="panel-body">这是资料</div>
+								<div class="panel-body">
+								这是资料
+								<br><button type="submit" class="btn btn-default">提交更改</button></div>
 							</div>
 						</div>
 					</div>
 				</div>
-				<button type="submit" class="btn btn-default">提交更改</button>
+				
 			</div>
 
 

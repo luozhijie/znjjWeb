@@ -151,6 +151,12 @@ public class PageServlet extends HttpServlet {
 			request.setAttribute("profileList", profileList);
 			url = "profileActive.jsp";
 		}
+		if(stat.equals("profileDel")){
+			ProfileDao profileDao = new ProfileDaoImpl();
+			List<Profile> profileList = profileDao.findProfileByUid(user.getUserId());
+			request.setAttribute("profileList", profileList);
+			url = "profileDel.jsp";
+		}
 		request.getRequestDispatcher(url).forward(request, response);
 	}
 

@@ -449,6 +449,7 @@ public class ActionServlet extends HttpServlet {
 			ProfileAction profileAction = new ProfileAction();
 			profileAction.setPid(Integer.valueOf(request.getParameter("pid")));
 			profileAction.setaDeviceId(Integer.valueOf(request.getParameter("did")));
+			profileAction.setA_action(Integer.valueOf(request.getParameter("aid")));
 			int tag = new ProfileActionDaoImpl().addProfileAction(profileAction);
 			if (tag > 0) {
 				response.getWriter().print("添加成功");
@@ -466,7 +467,24 @@ public class ActionServlet extends HttpServlet {
 				response.getWriter().println("添加失败");
 			}
 		}
-
+		if (stat.equals("delProfile")) {
+			int pid = Integer.valueOf(request.getParameter("pid"));
+			int tag = new ProfileDaoImpl().delProfileByPid(pid);
+			if (tag > 0) {
+				response.getWriter().print("删除成功");
+			} else {
+				response.getWriter().print("删除失败");
+			}
+		}
+		if (stat.equals("delProfileAction")) {
+			int aid = Integer.valueOf(request.getParameter("aid"));
+			int tag = new ProfileActionDaoImpl().delProfileActionByAid(aid);
+			if (tag > 0) {
+				response.getWriter().print("删除成功");
+			} else {
+				response.getWriter().print("删除失败");
+			}
+		}
 		return;
 	}
 
