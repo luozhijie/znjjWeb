@@ -24,7 +24,7 @@
 				<h3 class="title1">家庭组</h3>
 				<div class="panel-body widget-shadow">
 					<h4>家庭组管理:</h4>
-					<button type="button" class="btn btn-primary btn-lg"
+					<button type="button" class="btn btn-primary"
 						data-toggle="modal" data-target="#addFimaryGroup">新增家庭组</button>
 					<div class="modal fade" id="addFimaryGroup" tabindex="-1"
 						role="dialog" aria-labelledby="addFimaryGroup">
@@ -125,7 +125,7 @@
 									<td>${familyGroup.user4.userName }</td>
 									<td>${familyGroup.user5.userName }</td>
 									<td>
-										<button type="button" class="btn btn-primary btn-lg"
+										<button type="button" class="btn btn-primary"
 											data-toggle="modal" data-target="#edit${familyGroup.fid }">编辑家庭组</button>
 									</td>
 								</tr>
