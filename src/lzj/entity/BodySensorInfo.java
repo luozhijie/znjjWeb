@@ -10,6 +10,7 @@ public class BodySensorInfo {
 		super();
 	}
 
+	
 	public BodySensorInfo(int bid, int deviceId, String time, int isCheck) {
 		super();
 		this.bid = bid;
